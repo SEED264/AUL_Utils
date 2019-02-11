@@ -12,7 +12,8 @@ using std::vector;
 
 namespace aut {
     void getAULFunc(lua_State *L, const string &funcName);
-    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, int *out_w, int *out_h, const vector<string> &option=vector<string>());
+    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const vector<string> &option = vector<string>());
+    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const vector<string> &option = vector<string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
 }
 
@@ -21,7 +22,11 @@ void aut::getAULFunc(lua_State *L, const string &funcName) {
     lua_getfield(L, -1, funcName.c_str());
 }
 
-int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, int *out_w, int *out_h, const vector<string> &option=vector<string>()) {
+int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const vector<string> &option = vector<string>()) {
+    return getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
+}
+
+int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const vector<string> &option = vector<string>()) {
     getAULFunc(L, "getpixeldata");
     int argnum = 0;
     for(size_t i = 0; i < option.size(); i++) {
