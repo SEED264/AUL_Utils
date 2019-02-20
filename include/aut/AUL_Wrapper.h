@@ -26,7 +26,7 @@ namespace aut {
     int effect(lua_State *L, Parms... parms);
     int draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0, double zoom = 1, double alpha = 1, double rx = 0, double ry = 0, double rz = 0);
     int drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
-                 double u0 = 0, double v0 = 0, double u1 = FLT_MAX, double v1 = 0, double u2 = FLT_MAX, double v2 = 0, double u3 = 0, double v3 = FLT_MAX, double alpha = 1);
+                 double u0 = 0, double v0 = 0, double u1 = FLT_MAX, double v1 = 0, double u2 = FLT_MAX, double v2 = FLT_MAX, double u3 = 0, double v3 = FLT_MAX, double alpha = 1);
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
