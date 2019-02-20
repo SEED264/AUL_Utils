@@ -11,8 +11,7 @@
 namespace aut {
     void getAULFunc(lua_State *L, const std::string &funcName);
 
-    template<typename T>
-    size_t pushValue(lua_State *L, T *v);
+    size_t pushValue(lua_State *L, void *v);
     size_t pushValue(lua_State *L, lua_Integer v);
     size_t pushValue(lua_State *L, const std::string &v);
     size_t pushValue(lua_State *L, lua_Number v);
@@ -28,8 +27,7 @@ void aut::getAULFunc(lua_State *L, const std::string &funcName) {
 }
 
 
-template <typename T>
-size_t aut::pushValue(lua_State *L, T *v) {
+size_t aut::pushValue(lua_State *L, void *v) {
     lua_pushlightuserdata(L, v);
     return 1;
 }
