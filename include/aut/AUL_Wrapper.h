@@ -31,6 +31,8 @@ namespace aut {
     int load(lua_State *L, Parms... parms);
     template <typename... Parms>
     int setfont(lua_State *L, Parms... parms);
+    template <typename... Parms>
+    double rand(lua_State *L, double st_num, double ed_num, Parms... parms);
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -109,6 +111,14 @@ int aut::setfont(lua_State *L, Parms... parms) {
     size_t pushedNum = setArgs(L, parms...);
     lua_call(L, pushedNum, 0);
     return 0;
+}
+
+template <typename... Parms>
+double aut::rand(lua_State *L, double st_num, double ed_num, Parms... parms) {
+    getAULFunc(L, "rand");
+    size_t pushedNum = setArgs(L, st_num, ed_num, parms...);
+    lua_call(L, pushedNum, 1);
+    return lua_tonumber(L, -1);
 }
 
 int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
