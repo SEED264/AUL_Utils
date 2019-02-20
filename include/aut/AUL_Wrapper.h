@@ -69,6 +69,7 @@ int aut::effect(lua_State *L, Parms... parms) {
     aut::getAULFunc(L, "effect");
     size_t pushedNum = setArgs(L, parms...);
     lua_call(L, pushedNum, 0);
+    return 0;
 }
 
 int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
@@ -95,6 +96,7 @@ int aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
     getAULFunc(L, "putpixeldata");
     lua_pushlightuserdata(L, data);
     lua_call(L, 1, 0);
+    return 0;
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_WRAPPER_H_
