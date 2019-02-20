@@ -16,6 +16,11 @@ namespace aut {
     size_t pushValue(lua_State *L, const std::string &v);
     size_t pushValue(lua_State *L, lua_Number v);
 
+    template <typename T>
+    size_t setArgs(lua_State *L, T value);
+    template <typename T, typename... Parms>
+    size_t setArgs(lua_State *L, T value, Parms... parms);
+
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -25,7 +30,6 @@ void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getglobal(L, "obj");
     lua_getfield(L, -1, funcName.c_str());
 }
-
 
 size_t aut::pushValue(lua_State *L, void *v) {
     lua_pushlightuserdata(L, v);
@@ -45,6 +49,17 @@ size_t aut::pushValue(lua_State *L, const std::string &v) {
 size_t aut::pushValue(lua_State *L, lua_Number v) {
     lua_pushnumber(L, v);
     return 1;
+}
+
+template <typename T>
+size_t aut::setArgs(lua_State *L, T value) {
+    return aut::pushValue(L, value);
+}
+
+template <typename T, typename... Parms>
+size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
+    size_t pushedNum = aut::pushValue(L, value);
+    return setArgs(L, parms...) + pushedNum;
 }
 
 int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
