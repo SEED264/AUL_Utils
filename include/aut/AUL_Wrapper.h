@@ -29,6 +29,8 @@ namespace aut {
                  double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0, double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX, double alpha = 1);
     template <typename... Parms>
     int load(lua_State *L, Parms... parms);
+    template <typename... Parms>
+    int setfont(lua_State *L, Parms... parms);
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -96,6 +98,14 @@ int aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, doub
 template <typename... Parms>
 int aut::load(lua_State *L, Parms... parms) {
     aut::getAULFunc(L, "load");
+    size_t pushedNum = setArgs(L, parms...);
+    lua_call(L, pushedNum, 0);
+    return 0;
+}
+
+template <typename... Parms>
+int aut::setfont(lua_State *L, Parms... parms) {
+    aut::getAULFunc(L, "setfont");
     size_t pushedNum = setArgs(L, parms...);
     lua_call(L, pushedNum, 0);
     return 0;
