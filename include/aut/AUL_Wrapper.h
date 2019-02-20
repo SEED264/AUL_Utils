@@ -21,6 +21,8 @@ namespace aut {
     template <typename T, typename... Parms>
     size_t setArgs(lua_State *L, T value, Parms... parms);
 
+    template <typename... Parms>
+    int effect(lua_State *L, Parms... parms);
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -60,6 +62,13 @@ template <typename T, typename... Parms>
 size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
     size_t pushedNum = aut::pushValue(L, value);
     return setArgs(L, parms...) + pushedNum;
+}
+
+template <typename... Parms>
+int aut::effect(lua_State *L, Parms... parms) {
+    aut::getAULFunc(L, "effect");
+    size_t pushedNum = setArgs(L, parms...);
+    lua_call(L, pushedNum, 0);
 }
 
 int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
