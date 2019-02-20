@@ -23,6 +23,7 @@ namespace aut {
 
     template <typename... Parms>
     int effect(lua_State *L, Parms... parms);
+    int draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0, double zoom = 1, double alpha = 1, double rx = 0, double ry = 0, double rz = 0);
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -68,6 +69,13 @@ template <typename... Parms>
 int aut::effect(lua_State *L, Parms... parms) {
     aut::getAULFunc(L, "effect");
     size_t pushedNum = setArgs(L, parms...);
+    lua_call(L, pushedNum, 0);
+    return 0;
+}
+
+int aut::draw(lua_State *L, double ox, double oy, double oz, double zoom, double alpha, double rx, double ry, double rz) {
+    getAULFunc(L, "draw");
+    size_t pushedNum = setArgs(L, ox, oy, oz, zoom, alpha, rx, ry, rz);
     lua_call(L, pushedNum, 0);
     return 0;
 }
