@@ -8,11 +8,8 @@
 #include "aut/AUL_Enum.h"
 #include "aut/AUL_Type.h"
 
-using std::string;
-using std::vector;
-
 namespace aut {
-    void getAULFunc(lua_State *L, const string &funcName);
+    void getAULFunc(lua_State *L, const std::string &funcName);
 
     template<typename T>
     size_t pushValue(lua_State *L, T *v);
@@ -20,12 +17,12 @@ namespace aut {
     size_t pushValue(lua_State *L, const std::string &v);
     size_t pushValue(lua_State *L, lua_Number v);
 
-    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const vector<string> &option = vector<string>());
-    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const vector<string> &option = vector<string>());
+    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
+    int getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     int putpixeldata(lua_State *L, Pixel_RGBA *data);
 }
 
-void aut::getAULFunc(lua_State *L, const string &funcName) {
+void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getglobal(L, "obj");
     lua_getfield(L, -1, funcName.c_str());
 }
@@ -52,13 +49,11 @@ size_t aut::pushValue(lua_State *L, lua_Number v) {
     return 1;
 }
 
-
-int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const vector<string> &option) {
+int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
     return getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
 }
 
-int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const vector<string> &option)
-{
+int aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option) {
     getAULFunc(L, "getpixeldata");
     int argnum = 0;
     for(size_t i = 0; i < option.size(); i++) {
