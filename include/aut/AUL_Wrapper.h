@@ -126,7 +126,7 @@ double aut::rand(lua_State *L, double st_num, double ed_num, Parms... parms) {
 template <typename... Parms>
 int aut::setoption(lua_State *L, const std::string &name, Parms... parms) {
     getAULFunc(L, "setoption");
-    size_t pushedNum = setArgs(L, name, parms);
+    size_t pushedNum = setArgs(L, name, parms...);
     lua_call(L, pushedNum, 0);
     return 0;
 }
