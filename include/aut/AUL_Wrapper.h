@@ -81,14 +81,12 @@ void aut::effect(lua_State *L, Parms... parms) {
     aut::getAULFunc(L, "effect");
     size_t pushedNum = setArgs(L, parms...);
     lua_call(L, pushedNum, 0);
-    return 0;
 }
 
 void aut::draw(lua_State *L, double ox, double oy, double oz, double zoom, double alpha, double rx, double ry, double rz) {
     getAULFunc(L, "draw");
     size_t pushedNum = setArgs(L, ox, oy, oz, zoom, alpha, rx, ry, rz);
     lua_call(L, pushedNum, 0);
-    return 0;
 }
 
 void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
@@ -96,7 +94,6 @@ void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, dou
     getAULFunc(L, "drawpoly");
     size_t pushedNum = setArgs(L, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3, alpha);
     lua_call(L, pushedNum, 0);
-    return 0;
 }
 
 template <typename... Parms>
@@ -144,7 +141,6 @@ void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *o
     *out_w = lua_tointeger(L, -2);
     *out_data = (Pixel_RGBA*)lua_touserdata(L, -3);
     lua_pop(L, 3);
-    if (*out_data == nullptr) return -1;
 }
 
 void aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
