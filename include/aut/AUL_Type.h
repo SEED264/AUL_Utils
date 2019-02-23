@@ -27,6 +27,15 @@ namespace aut{
             Size_2D(0, 0);
         }
     };
+
+    // カメラのパラメータ用の構造体
+    struct Camera_Param {
+        float  x,  y,  z;
+        float tx, ty, tz;
+        float rz;
+        float ux, uy, uz;
+        float d;
+    };
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_TYPE_H_
