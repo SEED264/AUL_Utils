@@ -36,6 +36,7 @@ namespace aut {
     template <typename... Parms>
     void setoption(lua_State *L, const std::string &name, Parms... parms);
     lua_Integer getoption_track_mode(lua_State *L, lua_Integer value);
+    lua_Integer getoption_section_num(lua_State *L);
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -135,8 +136,17 @@ lua_Integer aut::getoption_track_mode(lua_State *L, lua_Integer value) {
     return ret;
 }
 
+lua_Integer aut::getoption_section_num(lua_State *L) {
+    getAULFunc(L, "getoption");
+    size_t pushedNum = setArgs(L, "section_num");
+    lua_call(L, pushedNum, 1);
+    lua_Integer ret = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
-    getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
+  getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
 }
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option) {
