@@ -154,7 +154,8 @@ lua_Integer aut::getoption_section_num(lua_State *L) {
 
 const char* aut::getoption_script_name(lua_State *L, lua_Integer value, bool skip) {
     getAULFunc(L, "getoption");
-    size_t pushedNum = setArgs(L, "script_name", value, skip);
+    size_t pushedNum = setArgs(L, "script_name", value);
+    pushedNum += pushBool(L, skip);
     lua_call(L, pushedNum, 1);
     const char *ret = lua_tostring(L, -1);
     lua_pop(L, 1);
