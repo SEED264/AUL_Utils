@@ -16,6 +16,7 @@ namespace aut {
     size_t pushValue(lua_State *L, lua_Integer v);
     size_t pushValue(lua_State *L, const std::string &v);
     size_t pushValue(lua_State *L, lua_Number v);
+    size_t pushValue(lua_State *L, bool v);
 
     template <typename T>
     size_t setArgs(lua_State *L, T value);
@@ -65,6 +66,11 @@ size_t aut::pushValue(lua_State *L, const std::string &v) {
 
 size_t aut::pushValue(lua_State *L, lua_Number v) {
     lua_pushnumber(L, v);
+    return 1;
+}
+
+size_t aut::pushValue(lua_State *L, bool v) {
+    lua_pushboolean(L, v);
     return 1;
 }
 
