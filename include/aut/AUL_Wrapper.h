@@ -12,6 +12,12 @@
 namespace aut {
     void getAULFunc(lua_State *L, const std::string &funcName);
 
+    bool getfield_Boolean(lua_State *L, const std::string &name);
+    lua_Integer getfield_Integer(lua_State *L, const std::string &name);
+    lua_Number getfield_Number(lua_State *L, const std::string &name);
+    const char* getfield_String(lua_State *L, const std::string &name);
+    void* getfield_Userdata(lua_State *L, const std::string &name);
+
     size_t pushValue(lua_State *L, void *v);
     size_t pushValue(lua_State *L, lua_Integer v);
     size_t pushValue(lua_State *L, const std::string &v);
@@ -49,6 +55,41 @@ namespace aut {
 void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getglobal(L, "obj");
     lua_getfield(L, -1, funcName.c_str());
+}
+
+bool aut::getfield_Boolean(lua_State *L, const std::string &name) {
+    lua_getfield(L, -1, name.c_str());
+    bool ret = static_cast<bool>(lua_toboolean(L, -1));
+    lua_pop(L, 1);
+    return ret;
+}
+
+lua_Integer aut::getfield_Integer(lua_State *L, const std::string &name) {
+    lua_getfield(L, -1, name.c_str());
+    lua_Integer ret = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+lua_Number aut::getfield_Number(lua_State *L, const std::string &name) {
+    lua_getfield(L, -1, name.c_str());
+    lua_Number ret = lua_tonumber(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+const char* aut::getfield_String(lua_State *L, const std::string &name) {
+    lua_getfield(L, -1, name.c_str());
+    const char *ret = lua_tostring(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+void* aut::getfield_Userdata(lua_State *L, const std::string &name) {
+    lua_getfield(L, -1, name.c_str());
+    void *ret = lua_touserdata(L, -1);
+    lua_pop(L, 1);
+    return ret;
 }
 
 size_t aut::pushValue(lua_State *L, void *v) {
