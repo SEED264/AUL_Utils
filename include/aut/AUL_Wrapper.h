@@ -163,7 +163,7 @@ const char* aut::getoption_script_name(lua_State *L, lua_Integer value, bool ski
 }
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
-  getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
+    getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
 }
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option) {
