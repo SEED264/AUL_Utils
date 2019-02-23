@@ -227,6 +227,7 @@ lua_Integer aut::getoption_camera_mode(lua_State *L) {
 aut::Camera_Param aut::getoption_camera_param(lua_State *L) {
     getAULFunc(L, "getoption");
     size_t pushedNum = setArgs(L, "camera_param");
+    lua_call(L, pushedNum, 1);
     Camera_Param cp;
     cp.x  = getfield_Number(L, "x");
     cp.y  = getfield_Number(L, "y");
