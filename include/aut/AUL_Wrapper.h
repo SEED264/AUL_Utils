@@ -128,7 +128,7 @@ void aut::setoption(lua_State *L, const std::string &name, Parms... parms) {
 
 lua_Integer aut::getoption_track_mode(lua_State *L, lua_Integer value) {
     getAULFunc(L, "getoption");
-    size_t pushedNum = setArgs(L, value);
+    size_t pushedNum = setArgs(L, "track_mode", value);
     lua_call(L, pushedNum, 1);
     lua_Integer ret = lua_tointeger(L, -1);
     lua_pop(L, 1);
