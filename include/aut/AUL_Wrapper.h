@@ -39,6 +39,7 @@ namespace aut {
     lua_Integer getoption_track_mode(lua_State *L, lua_Integer value);
     lua_Integer getoption_section_num(lua_State *L);
     const char* getoption_script_name(lua_State *L, lua_Integer value = 0, bool skip = false);
+    bool getoption_gui(lua_State *L);
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -160,6 +161,15 @@ const char* aut::getoption_script_name(lua_State *L, lua_Integer value, bool ski
     const char *ret = lua_tostring(L, -1);
     lua_pop(L, 1);
     return ret;
+}
+
+bool aut::getoption_gui(lua_State *L) {
+    getAULFunc(L, "getoption");
+    size_t pushedNum = setArgs(L, "gui");
+    lua_call(L, pushedNum, 1);
+    int ret = lua_toboolean(L, -1);
+    lua_pop(L, 1);
+    return static_cast<bool>(ret);
 }
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
