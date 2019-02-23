@@ -47,6 +47,7 @@ namespace aut {
     const char* getoption_script_name(lua_State *L, lua_Integer value = 0, bool skip = false);
     bool getoption_gui(lua_State *L);
     lua_Integer getoption_camera_mode(lua_State *L);
+    Camera_Param getoption_camera_param(lua_State *L);
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -221,6 +222,25 @@ lua_Integer aut::getoption_camera_mode(lua_State *L) {
     int ret = lua_tointeger(L, -1);
     lua_pop(L, 1);
     return ret;
+}
+
+aut::Camera_Param aut::getoption_camera_param(lua_State *L) {
+    getAULFunc(L, "getoption");
+    size_t pushedNum = setArgs(L, "camera_param");
+    Camera_Param cp;
+    cp.x  = getfield_Number(L, "x");
+    cp.y  = getfield_Number(L, "y");
+    cp.z  = getfield_Number(L, "z");
+    cp.tx = getfield_Number(L, "tx");
+    cp.ty = getfield_Number(L, "ty");
+    cp.tz = getfield_Number(L, "tz");
+    cp.rz = getfield_Number(L, "rz");
+    cp.ux = getfield_Number(L, "ux");
+    cp.uy = getfield_Number(L, "uy");
+    cp.uz = getfield_Number(L, "uz");
+    cp.d  = getfield_Number(L, "d");
+    lua_pop(L, 1);
+    return cp;
 }
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
