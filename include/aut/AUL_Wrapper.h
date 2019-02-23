@@ -35,6 +35,7 @@ namespace aut {
     lua_Integer rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Parms... parms);
     template <typename... Parms>
     void setoption(lua_State *L, const std::string &name, Parms... parms);
+    lua_Integer getoption_track_mode(lua_State *L, lua_Integer value);
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -123,6 +124,15 @@ void aut::setoption(lua_State *L, const std::string &name, Parms... parms) {
     getAULFunc(L, "setoption");
     size_t pushedNum = setArgs(L, name, parms...);
     lua_call(L, pushedNum, 0);
+}
+
+lua_Integer aut::getoption_track_mode(lua_State *L, lua_Integer value) {
+    getAULFunc(L, "getoption");
+    size_t pushedNum = setArgs(L, value);
+    lua_call(L, pushedNum, 1);
+    lua_Integer ret = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return ret;
 }
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
