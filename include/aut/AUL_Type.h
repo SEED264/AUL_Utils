@@ -30,11 +30,11 @@ namespace aut{
 
     // カメラのパラメータ用の構造体
     struct Camera_Param {
-        float  x,  y,  z;
-        float tx, ty, tz;
-        float rz;
-        float ux, uy, uz;
-        float d;
+        double  x,  y,  z;
+        double tx, ty, tz;
+        double rz;
+        double ux, uy, uz;
+        double d;
     };
 }
 
