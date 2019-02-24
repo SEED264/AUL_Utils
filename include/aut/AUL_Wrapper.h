@@ -169,7 +169,9 @@ lua_Integer aut::rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Parm
     getAULFunc(L, "rand");
     size_t pushedNum = setArgs(L, st_num, ed_num, parms...);
     lua_call(L, pushedNum, 1);
-    return lua_tointeger(L, -1);
+    lua_Integer ret = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return ret;
 }
 
 template <typename... Parms>
