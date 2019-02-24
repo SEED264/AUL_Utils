@@ -135,12 +135,14 @@ void aut::effect(lua_State *L, Parms... parms) {
     aut::getAULFunc(L, "effect");
     size_t pushedNum = setArgs(L, parms...);
     lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 void aut::draw(lua_State *L, double ox, double oy, double oz, double zoom, double alpha, double rx, double ry, double rz) {
     getAULFunc(L, "draw");
     size_t pushedNum = setArgs(L, ox, oy, oz, zoom, alpha, rx, ry, rz);
     lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
@@ -148,6 +150,7 @@ void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, dou
     getAULFunc(L, "drawpoly");
     size_t pushedNum = setArgs(L, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3, alpha);
     lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 template <typename... Parms>
@@ -155,6 +158,7 @@ void aut::load(lua_State *L, Parms... parms) {
     aut::getAULFunc(L, "load");
     size_t pushedNum = setArgs(L, parms...);
     lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 template <typename... Parms>
@@ -162,6 +166,7 @@ void aut::setfont(lua_State *L, const std::string &name, double size, Parms... p
     aut::getAULFunc(L, "setfont");
     size_t pushedNum = setArgs(L, name, size, parms...);
     lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 template <typename... Parms>
@@ -170,7 +175,7 @@ lua_Integer aut::rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Parm
     size_t pushedNum = setArgs(L, st_num, ed_num, parms...);
     lua_call(L, pushedNum, 1);
     lua_Integer ret = lua_tointeger(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return ret;
 }
 
@@ -179,6 +184,7 @@ void aut::setoption(lua_State *L, const std::string &name, Parms... parms) {
     getAULFunc(L, "setoption");
     size_t pushedNum = setArgs(L, name, parms...);
     lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 lua_Integer aut::getoption_track_mode(lua_State *L, lua_Integer value) {
@@ -186,7 +192,7 @@ lua_Integer aut::getoption_track_mode(lua_State *L, lua_Integer value) {
     size_t pushedNum = setArgs(L, "track_mode", value);
     lua_call(L, pushedNum, 1);
     lua_Integer ret = lua_tointeger(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return ret;
 }
 
@@ -195,7 +201,7 @@ lua_Integer aut::getoption_section_num(lua_State *L) {
     size_t pushedNum = setArgs(L, "section_num");
     lua_call(L, pushedNum, 1);
     lua_Integer ret = lua_tointeger(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return ret;
 }
 
@@ -205,7 +211,7 @@ const char* aut::getoption_script_name(lua_State *L, lua_Integer value, bool ski
     pushedNum += pushBool(L, skip);
     lua_call(L, pushedNum, 1);
     const char *ret = lua_tostring(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return ret;
 }
 
@@ -214,7 +220,7 @@ bool aut::getoption_gui(lua_State *L) {
     size_t pushedNum = setArgs(L, "gui");
     lua_call(L, pushedNum, 1);
     int ret = lua_toboolean(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return static_cast<bool>(ret);
 }
 
@@ -223,7 +229,7 @@ lua_Integer aut::getoption_camera_mode(lua_State *L) {
     size_t pushedNum = setArgs(L, "camera_mode");
     lua_call(L, pushedNum, 1);
     int ret = lua_tointeger(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return ret;
 }
 
@@ -243,7 +249,7 @@ aut::Camera_Param aut::getoption_camera_param(lua_State *L) {
     cp.uy = getfield_Number(L, "uy");
     cp.uz = getfield_Number(L, "uz");
     cp.d  = getfield_Number(L, "d");
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return cp;
 }
 
@@ -252,7 +258,7 @@ bool aut::getoption_multi_object(lua_State *L) {
     size_t pushedNum = setArgs(L, "multi_object");
     lua_call(L, pushedNum, 1);
     int ret = lua_toboolean(L, -1);
-    lua_pop(L, 1);
+    lua_pop(L, 2);
     return static_cast<bool>(ret);
 }
 
@@ -271,13 +277,14 @@ void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *o
     *out_h = lua_tointeger(L, -1);
     *out_w = lua_tointeger(L, -2);
     *out_data = (Pixel_RGBA*)lua_touserdata(L, -3);
-    lua_pop(L, 3);
+    lua_pop(L, 4);
 }
 
 void aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
     getAULFunc(L, "putpixeldata");
     lua_pushlightuserdata(L, data);
     lua_call(L, 1, 0);
+    lua_pop(L, 1);
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_WRAPPER_H_
