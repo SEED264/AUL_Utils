@@ -51,6 +51,8 @@ namespace aut {
     bool getoption_multi_object(lua_State *L);
     template<typename T, typename... Parms>
     lua_Number getvalue(lua_State *L, T target, Parms... parms);
+    template<typename T, typename... Parms>
+    lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms);
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
@@ -273,6 +275,17 @@ lua_Number aut::getvalue(lua_State *L, T target, Parms... parms) {
     lua_pop(L, 2);
     return ret;
 }
+
+template<typename T, typename... Parms>
+lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms) {
+    getAULFunc(L, "setanchor");
+    size_t pushedNum = setArgs(L, name, num, parms...);
+    lua_call(L, pushedNum, 1);
+    lua_Integer ret = lua_tointeger(L, -1);
+    lua_pop(L, 2);
+    return ret;
+}
+
 
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
     getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
