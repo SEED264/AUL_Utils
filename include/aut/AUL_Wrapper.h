@@ -24,6 +24,7 @@ namespace aut {
     size_t pushValue(lua_State *L, lua_Number v);
     size_t pushBool(lua_State *L, bool v);
 
+    size_t setArgs(lua_State *L);
     template <typename T>
     size_t setArgs(lua_State *L, T value);
     template <typename T, typename... Parms>
@@ -123,6 +124,10 @@ size_t aut::pushValue(lua_State *L, lua_Number v) {
 size_t aut::pushBool(lua_State *L, bool v) {
     lua_pushboolean(L, v);
     return 1;
+}
+
+size_t aut::setArgs(lua_State *L) {
+    return 0;
 }
 
 template <typename T>
