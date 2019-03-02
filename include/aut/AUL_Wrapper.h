@@ -18,6 +18,12 @@ namespace aut {
     const char* getfield_String(lua_State *L, const std::string &name);
     void* getfield_Userdata(lua_State *L, const std::string &name);
 
+    bool gettable_Boolean(lua_State *L, int index, int tableIndex = -1);
+    lua_Integer gettable_Integer(lua_State *L, int index, int tableIndex = -1);
+    lua_Number gettable_Number(lua_State *L, int index, int tableIndex = -1);
+    const char* gettable_String(lua_State *L, int index, int tableIndex = -1);
+    void* gettable_Userdata(lua_State *L, int index, int tableIndex = -1);
+
     size_t pushValue(lua_State *L, void *v);
     size_t pushValue(lua_State *L, lua_Integer v);
     size_t pushValue(lua_State *L, const std::string &v);
@@ -96,6 +102,46 @@ const char* aut::getfield_String(lua_State *L, const std::string &name) {
 
 void* aut::getfield_Userdata(lua_State *L, const std::string &name) {
     lua_getfield(L, -1, name.c_str());
+    void *ret = lua_touserdata(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+bool aut::gettable_Boolean(lua_State *L, int index, int tableIndex) {
+    pushValue(L, index);
+    lua_gettable(L, tableIndex - 1);
+    bool ret = lua_toboolean(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+lua_Integer aut::gettable_Integer(lua_State *L, int index, int tableIndex) {
+    pushValue(L, index);
+    lua_gettable(L, tableIndex - 1);
+    lua_Integer ret = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+lua_Number aut::gettable_Number(lua_State *L, int index, int tableIndex) {
+    pushValue(L, index);
+    lua_gettable(L, tableIndex - 1);
+    lua_Number ret = lua_tonumber(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+const char* aut::gettable_String(lua_State *L, int index, int tableIndex) {
+    pushValue(L, index);
+    lua_gettable(L, tableIndex - 1);
+    const char *ret = lua_tostring(L, -1);
+    lua_pop(L, 1);
+    return ret;
+}
+
+void* aut::gettable_Userdata(lua_State *L, int index, int tableIndex) {
+    pushValue(L, index);
+    lua_gettable(L, tableIndex - 1);
     void *ret = lua_touserdata(L, -1);
     lua_pop(L, 1);
     return ret;
