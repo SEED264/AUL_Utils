@@ -290,7 +290,7 @@ lua_Integer aut::setanchor(lua_State *L, const std::string &name, lua_Integer nu
 
 template<typename... Parms>
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms) {
-    getpixeldata(L, out_data, &out_size->w, &out_size->h, parms);
+    getpixeldata(L, out_data, &out_size->w, &out_size->h, parms...);
 }
 
 template<typename... Parms>
