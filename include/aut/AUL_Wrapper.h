@@ -53,8 +53,10 @@ namespace aut {
     lua_Number getvalue(lua_State *L, T target, Parms... parms);
     template<typename... Parms>
     lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms);
-    void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option = std::vector<std::string>());
-    void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option = std::vector<std::string>());
+    template<typename... Parms>
+    void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
+    template<typename... Parms>
+    void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, Parms... parms);
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
 }
 
@@ -286,23 +288,20 @@ lua_Integer aut::setanchor(lua_State *L, const std::string &name, lua_Integer nu
     return ret;
 }
 
-
-void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, const std::vector<std::string> &option) {
-    getpixeldata(L, out_data, &out_size->w, &out_size->h, option);
+template<typename... Parms>
+void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms) {
+    getpixeldata(L, out_data, &out_size->w, &out_size->h, parms);
 }
 
-void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, const std::vector<std::string> &option) {
+template<typename... Parms>
+void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, Parms... parms) {
     getAULFunc(L, "getpixeldata");
-    int argnum = 0;
-    for(size_t i = 0; i < option.size(); i++) {
-        lua_pushstring(L, option[i].c_str());
-        argnum++;
-    }
-    lua_call(L, argnum, 3);
+    int pushedNum = setArgs(L, parms...);
+    lua_call(L, pushedNum, 3);
     *out_h = lua_tointeger(L, -1);
     *out_w = lua_tointeger(L, -2);
-    *out_data = (Pixel_RGBA*)lua_touserdata(L, -3);
-    lua_pop(L, 4);
+    *out_data = reinterpret_cast<Pixel_RGBA*>(lua_touserdata(L, -3));
+    lua_pop(L, pushedNum + 4);
 }
 
 void aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
