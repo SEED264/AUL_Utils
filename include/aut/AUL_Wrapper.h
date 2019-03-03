@@ -74,7 +74,7 @@ void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getfield(L, -1, funcName.c_str());
 }
 
-bool getLocalVariable(lua_State *L, const std::string &name) {
+bool aut::getLocalVariable(lua_State *L, const std::string &name) {
     lua_Debug lDebug;
     lua_getstack(L, 1, &lDebug);
     size_t i = 1;
