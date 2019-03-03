@@ -12,6 +12,8 @@
 namespace aut {
     void getAULFunc(lua_State *L, const std::string &funcName);
 
+    bool getLocalVariable(lua_State *L, const std::string &name);
+
     bool getfield_Boolean(lua_State *L, const std::string &name);
     lua_Integer getfield_Integer(lua_State *L, const std::string &name);
     lua_Number getfield_Number(lua_State *L, const std::string &name);
@@ -70,6 +72,20 @@ namespace aut {
 void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getglobal(L, "obj");
     lua_getfield(L, -1, funcName.c_str());
+}
+
+bool getLocalVariable(lua_State *L, const std::string &name) {
+    lua_Debug lDebug;
+    lua_getstack(L, 1, &lDebug);
+    size_t i = 1;
+    while(true){
+        const char *vn = lua_getlocal(L, &lDebug, i);
+        if (vn == nullptr)return false;
+        if (vn == name) return true;
+        lua_pop(L, 1);
+        i++;
+    }
+    return false;
 }
 
 bool aut::getfield_Boolean(lua_State *L, const std::string &name) {
