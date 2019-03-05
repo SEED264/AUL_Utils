@@ -76,7 +76,7 @@ void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getfield(L, -1, funcName.c_str());
 }
 
-bool aut::getVariable(lua_State *L, const std::string &name, int max_Local_Hierarchy = UCHAR_MAX) {
+bool aut::getVariable(lua_State *L, const std::string &name, int max_Local_Hierarchy) {
     if (getLocalVariable(L, name, max_Local_Hierarchy))
         return true;
     if (getGlobalVariable(L, name))
