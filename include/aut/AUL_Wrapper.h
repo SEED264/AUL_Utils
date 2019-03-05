@@ -12,6 +12,7 @@
 namespace aut {
     void getAULFunc(lua_State *L, const std::string &funcName);
 
+    bool getGlobalVariable(lua_State *L, const std::string &name);
     bool getLocalVariable(lua_State *L, const std::string &name, int max_Hierarchy = UCHAR_MAX);
 
     bool getfield_Boolean(lua_State *L, const std::string &name);
@@ -72,6 +73,13 @@ namespace aut {
 void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getglobal(L, "obj");
     lua_getfield(L, -1, funcName.c_str());
+}
+
+bool aut::getGlobalVariable(lua_State *L, const std::string &name) {
+    int stackNum_before = lua_gettop(L);
+    lua_getglobal(L, name.c_str());
+    if (lua_gettop(L) == stackNum_before)return false;
+    return true;
 }
 
 bool aut::getLocalVariable(lua_State *L, const std::string &name, int max_Hierarchy) {
