@@ -407,6 +407,8 @@ std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName,
     for (size_t i = 0; i < bufSize; i++) {
         buf[i] = gettable_Integer(L, i + 1);
     }
+
+    lua_pop(L, returnNum + 1);
     return buf;
 }
 
