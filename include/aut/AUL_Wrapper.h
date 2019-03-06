@@ -96,10 +96,10 @@ bool aut::getLocalVariable(lua_State *L, const std::string &name, int max_Hierar
         lua_Debug lDebug;
         if (!lua_getstack(L, hi, &lDebug))break;
         size_t i = 1;
-        while(true){
+        while(true) {
             const char *vn = lua_getlocal(L, &lDebug, i);
             if (vn == nullptr)break;
-            if (vn == name) return true;
+            if (vn == name)return true;
             lua_pop(L, 1);
             i++;
         }
