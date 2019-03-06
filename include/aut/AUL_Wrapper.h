@@ -425,7 +425,7 @@ void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *o
     *out_h = lua_tointeger(L, -1);
     *out_w = lua_tointeger(L, -2);
     *out_data = reinterpret_cast<Pixel_RGBA*>(lua_touserdata(L, -3));
-    lua_pop(L, pushedNum + 4);
+    lua_pop(L, 4);
 }
 
 void aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
