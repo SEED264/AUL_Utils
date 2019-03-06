@@ -66,6 +66,8 @@ namespace aut {
     lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms);
     std::vector<lua_Integer> getaudio(lua_State *L, const std::string &bufName, const std::string &file, const std::string &type, lua_Integer size, lua_Integer *out_dataNum = nullptr, lua_Integer *out_samplingRate = nullptr);
     template<typename... Parms>
+    void filter(lua_State *L, const std::string &name, Parms... parms);
+    template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, Parms... parms);
@@ -410,6 +412,14 @@ std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName,
 
     lua_pop(L, 4);
     return buf;
+}
+
+template<typename... Parms>
+void aut::filter(lua_State *L, const std::string &name, Parms... parms) {
+    getAULFunc(L, "filter");
+    size_t pushedNum = setArgs(L, name, parms...);
+    lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 template<typename... Parms>
