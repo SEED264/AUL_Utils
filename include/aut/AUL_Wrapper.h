@@ -85,9 +85,11 @@ aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, int ma
 }
 
 bool aut::getGlobalVariable(lua_State *L, const std::string &name) {
-    int stackNum_before = lua_gettop(L);
     lua_getglobal(L, name.c_str());
-    if (lua_gettop(L) == stackNum_before)return false;
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 1);
+        return false;
+    }
     return true;
 }
 
