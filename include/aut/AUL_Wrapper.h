@@ -381,7 +381,7 @@ std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName,
     getAULFunc(L, "getaudio");
 
     bool return_buffer = false;
-    size_t returnNum = 2;
+    int returnNum = 2;
     if (bufName == "nil" || !getVariable(L, bufName)) {
         return_buffer = true;
     } else if (!lua_istable(L, -1)) {
