@@ -7,6 +7,11 @@ namespace aut {
         work = 1,
         alloc = 2
     };
+    enum LuaVarStatus : int{
+        kLuaVarNotFound = 0,
+        kLuaVarLocal = 1,
+        kLuaVarGlobal = 2
+    };
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_ENUM_H_
