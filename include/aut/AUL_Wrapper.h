@@ -404,11 +404,10 @@ std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName,
     if (!return_buffer)
         getVariable(L, bufName);
     std::vector<lua_Integer> buf(bufSize);
-    for (size_t i = 1; i <= bufSize; i++) {
-        buf[i] = gettable_Integer(L, i);
+    for (size_t i = 0; i < bufSize; i++) {
+        buf[i] = gettable_Integer(L, i + 1);
     }
     return buf;
-
 }
 
 template<typename... Parms>
