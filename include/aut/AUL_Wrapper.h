@@ -64,6 +64,7 @@ namespace aut {
     lua_Number getvalue(lua_State *L, T target, Parms... parms);
     template<typename... Parms>
     lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms);
+    std::vector<lua_Integer> getaudio(lua_State *L, const std::string &bufName, const std::string &file, const std::string &type, lua_Integer size, lua_Integer *out_dataNum, lua_Integer *out_samplingRate = nullptr);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
@@ -374,6 +375,40 @@ lua_Integer aut::setanchor(lua_State *L, const std::string &name, lua_Integer nu
     lua_Integer ret = lua_tointeger(L, -1);
     lua_pop(L, 2);
     return ret;
+}
+
+std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName, const std::string &file, const std::string &type, lua_Integer size, lua_Integer *out_dataNum, lua_Integer *out_samplingRate) {
+    getAULFunc(L, "getaudio");
+
+    bool return_buffer = false;
+    size_t returnNum = 2;
+    if (bufName == "nil" || !getVariable(L, bufName)) {
+        return_buffer = true;
+    } else if (!lua_istable(L, -1)) {
+        lua_pop(L, 1);
+        return_buffer = true;
+    }
+    if (return_buffer) {
+        lua_pushnil(L);
+        returnNum++;
+    }
+    size_t pushedNum = setArgs(L, file, type, size) + 1;
+    lua_call(L, pushedNum, returnNum);
+
+    size_t bufSize = lua_tointeger(L, -returnNum);
+    if (out_dataNum != nullptr)
+        *out_dataNum = bufSize;
+    if (out_samplingRate != nullptr)
+        *out_samplingRate = lua_tointeger(L, -returnNum + 1);
+
+    if (!return_buffer)
+        getVariable(L, bufName);
+    std::vector<lua_Integer> buf(bufSize);
+    for (size_t i = 1; i <= bufSize; i++) {
+        buf[i] = gettable_Integer(L, i);
+    }
+    return buf;
+
 }
 
 template<typename... Parms>
