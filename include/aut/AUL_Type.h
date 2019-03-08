@@ -36,6 +36,16 @@ namespace aut{
         double ux, uy, uz;
         double d;
     };
+
+    // getpixel, putpixel等で使うcol用の構造体
+    struct Pixel_Col {
+        unsigned long col;
+        float a;
+        Pixel_Col(unsigned long acol, float aa):col(acol), a(aa) {}
+        Pixel_Col() {
+            Pixel_Col(0, 0);
+        }
+    };
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_TYPE_H_
