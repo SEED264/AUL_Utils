@@ -76,6 +76,8 @@ namespace aut {
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_RGBA pix);
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_YC pix);
     void copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y, lua_Integer src_x, lua_Integer src_y);
+    void pixeloption(lua_State *L, const std::string &name, const std::string &value);
+    void pixeloption(lua_State *L, const std::string &name, lua_Integer value);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
@@ -509,6 +511,20 @@ void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_YC pix) {
 void aut::copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y, lua_Integer src_x, lua_Integer src_y) {
     getAULFunc(L, "copypixel");
     size_t pushedNum = setArgs(L, dst_x, dst_y, src_x, src_y);
+    lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
+}
+
+void aut::pixeloption(lua_State *L, const std::string &name, const std::string &value) {
+    getAULFunc(L, "pixeloption");
+    size_t pushedNum = setArgs(L, name, value);
+    lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
+}
+
+void aut::pixeloption(lua_State *L, const std::string &name, lua_Integer value) {
+    getAULFunc(L, "pixeloption");
+    size_t pushedNum = setArgs(L, name, value);
     lua_call(L, pushedNum, 0);
     lua_pop(L, 1);
 }
