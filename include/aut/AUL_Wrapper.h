@@ -488,7 +488,7 @@ aut::Size_2D aut::getpixel_size(lua_State *L) {
 
 void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_Col pix) {
     getAULFunc(L, "putpixel");
-    size_t pushedNum = setArgs(L, x, y, pix.col, pix.a);
+    size_t pushedNum = setArgs(L, x, y, static_cast<lua_Integer>(pix.col), pix.a);
     lua_call(L, pushedNum, 0);
     lua_pop(L, 1);
 }
