@@ -69,6 +69,7 @@ namespace aut {
     void filter(lua_State *L, const std::string &name, Parms... parms);
     bool copybuffer(lua_State *L, const std::string &dst, const std::string &src);
     Pixel_Col getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
+    Pixel_RGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
@@ -441,6 +442,19 @@ aut::Pixel_Col aut::getpixel_col(lua_State *L, lua_Integer x, lua_Integer y) {
     ret.col = static_cast<unsigned long>(lua_tointeger(L, -2));
     ret.a = static_cast<float>(lua_tonumber(L, -1));
     lua_pop(L, 3);
+    return ret;
+}
+
+aut::Pixel_RGBA aut::getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y) {
+    getAULFunc(L, "getpixel");
+    size_t pushedNum = setArgs(L, x, y, "rgb");
+    lua_call(L, pushedNum, 4);
+    Pixel_RGBA ret;
+    ret.r = static_cast<byte>(lua_tointeger(L, -4));
+    ret.g = static_cast<byte>(lua_tointeger(L, -3));
+    ret.b = static_cast<byte>(lua_tointeger(L, -2));
+    ret.a = static_cast<byte>(lua_tointeger(L, -1));
+    lua_pop(L, 5);
     return ret;
 }
 
