@@ -12,9 +12,9 @@
 namespace aut {
     void getAULFunc(lua_State *L, const std::string &funcName);
 
-    LuaVarStatus getVariable(lua_State *L, const std::string &name, int max_Local_Hierarchy = UCHAR_MAX);
+    LuaVarStatus getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy = UCHAR_MAX);
     bool getGlobalVariable(lua_State *L, const std::string &name);
-    bool getLocalVariable(lua_State *L, const std::string &name, int max_Hierarchy = UCHAR_MAX);
+    bool getLocalVariable(lua_State *L, const std::string &name, size_t max_Hierarchy = UCHAR_MAX);
 
     bool getfield_Boolean(lua_State *L, const std::string &name);
     lua_Integer getfield_Integer(lua_State *L, const std::string &name);
@@ -83,7 +83,7 @@ void aut::getAULFunc(lua_State *L, const std::string &funcName) {
     lua_getfield(L, -1, funcName.c_str());
 }
 
-aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, int max_Local_Hierarchy) {
+aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy) {
     if (getLocalVariable(L, name, max_Local_Hierarchy))
         return kLuaVarLocal;
     if (getGlobalVariable(L, name))
@@ -100,7 +100,7 @@ bool aut::getGlobalVariable(lua_State *L, const std::string &name) {
     return true;
 }
 
-bool aut::getLocalVariable(lua_State *L, const std::string &name, int max_Hierarchy) {
+bool aut::getLocalVariable(lua_State *L, const std::string &name, size_t max_Hierarchy) {
     for(size_t hi = 1; hi <= max_Hierarchy; hi++) {
         lua_Debug lDebug;
         if (!lua_getstack(L, hi, &lDebug))break;
