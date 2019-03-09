@@ -71,6 +71,7 @@ namespace aut {
     Pixel_Col getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
     Pixel_RGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
     Pixel_YC getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y);
+    Size_2D getpixel_size(lua_State *L);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
@@ -469,6 +470,16 @@ aut::Pixel_YC aut::getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y) {
     ret.cr = static_cast<short>(lua_tointeger(L, -2));
     ret.a  = static_cast<unsigned short>(lua_tointeger(L, -1));
     lua_pop(L, 5);
+    return ret;
+}
+
+aut::Size_2D aut::getpixel_size(lua_State *L) {
+    getAULFunc(L, "getpixel");
+    lua_call(L, 0, 2);
+    Size_2D ret;
+    ret.w = static_cast<unsigned int>(lua_tointeger(L, -2));
+    ret.h = static_cast<unsigned int>(lua_tointeger(L, -1));
+    lua_pop(L, 3);
     return ret;
 }
 
