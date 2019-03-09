@@ -65,6 +65,8 @@ namespace aut {
     glm::dvec2 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number x1, lua_Number y1, lua_Number x2, lua_Number y2, lua_Number x3, lua_Number y3);
     glm::dvec3 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number z0, lua_Number x1, lua_Number y1, lua_Number z1,
                             lua_Number x2, lua_Number y2, lua_Number z2, lua_Number x3, lua_Number y3, lua_Number z3);
+    glm::dvec2 interpolation(lua_State *L, lua_Number time, const glm::dvec2 &p0, const glm::dvec2 &p1, const glm::dvec2 &p2, const glm::dvec2 &p3);
+    glm::dvec3 interpolation(lua_State *L, lua_Number time, const glm::dvec3 &p0, const glm::dvec3 &p1, const glm::dvec3 &p2, const glm::dvec3 &p3);
 }
 
 void aut::getAULFunc(lua_State *L, const std::string &funcName) {
@@ -446,6 +448,14 @@ glm::dvec3 aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_
     ret.z = lua_tonumber(L, -1);
     lua_pop(L, 4);
     return ret;
+}
+
+glm::dvec2 aut::interpolation(lua_State *L, lua_Number time, const glm::dvec2 &p0, const glm::dvec2 &p1, const glm::dvec2 &p2, const glm::dvec2 &p3) {
+    return interpolation(L, time, p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+}
+
+glm::dvec3 aut::interpolation(lua_State *L, lua_Number time, const glm::dvec3 &p0, const glm::dvec3 &p1, const glm::dvec3 &p2, const glm::dvec3 &p3) {
+    return interpolation(L, time, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_WRAPPER_H_
