@@ -72,6 +72,9 @@ namespace aut {
     Pixel_RGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
     Pixel_YC getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y);
     Size_2D getpixel_size(lua_State *L);
+    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_Col pix);
+    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_RGBA pix);
+    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_YC pix);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
@@ -481,6 +484,25 @@ aut::Size_2D aut::getpixel_size(lua_State *L) {
     ret.h = static_cast<unsigned int>(lua_tointeger(L, -1));
     lua_pop(L, 3);
     return ret;
+}
+
+void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_Col pix) {
+    getAULFunc(L, "putpixel");
+    size_t pushedNum = setArgs(L, x, y, pix.col, pix.a);
+    lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
+}
+void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_RGBA pix) {
+    getAULFunc(L, "putpixel");
+    size_t pushedNum = setArgs(L, x, y, pix.r, pix.g, pix.b, pix.a);
+    lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
+}
+void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_YC pix) {
+    getAULFunc(L, "putpixel");
+    size_t pushedNum = setArgs(L, x, y, pix.y, pix.cb, pix.cr, pix.a);
+    lua_call(L, pushedNum, 0);
+    lua_pop(L, 1);
 }
 
 template<typename... Parms>
