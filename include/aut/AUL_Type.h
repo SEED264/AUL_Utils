@@ -46,6 +46,18 @@ namespace aut{
             Pixel_Col(0, 0);
         }
     };
+
+    // getpixel, putpixel等で使うYCbCr用の構造体
+    struct Pixel_YC {
+        unsigned short y;
+        short cb, cr;
+        unsigned short a;
+        Pixel_YC(unsigned short ay, short acb, short acr, unsigned short aa)
+            :y(ay), cb(acb), cr(acr), a(aa) {}
+        Pixel_YC() {
+            Pixel_YC(0, 0, 0, 0);
+        }
+    };
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_TYPE_H_
