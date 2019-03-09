@@ -5,6 +5,8 @@
 #include <limits>
 #include <string>
 #include <vector>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 #include <lua.hpp>
 #include "aut/AUL_Enum.h"
 #include "aut/AUL_Type.h"
@@ -86,6 +88,10 @@ namespace aut {
     std::string getinfo_script_path(lua_State *L);
     bool getinfo_saving(lua_State *L);
     Size_2D getinfo_image_max(lua_State *L);
+    lua_Number interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number x1, lua_Number x2, lua_Number x3);
+    glm::dvec2 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number x1, lua_Number y1, lua_Number x2, lua_Number y2, lua_Number x3, lua_Number y3);
+    glm::dvec3 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number z0, lua_Number x1, lua_Number y1, lua_Number z1,
+                            lua_Number x2, lua_Number y2, lua_Number z2, lua_Number x3, lua_Number y3, lua_Number z3);
 }
 
 void aut::getAULFunc(lua_State *L, const std::string &funcName) {
@@ -581,6 +587,39 @@ aut::Size_2D aut::getinfo_image_max(lua_State *L) {
     ret.w = static_cast<unsigned int>(lua_tointeger(L, -2));
     ret.h = static_cast<unsigned int>(lua_tointeger(L, -1));
     lua_pop(L, 3);
+    return ret;
+}
+
+lua_Number aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number x1, lua_Number x2, lua_Number x3) {
+    getAULFunc(L, "interpolation");
+    size_t pushedNum = setArgs(L, time, x0, x1, x2, x3);
+    lua_call(L, pushedNum, 1);
+    lua_Number ret = lua_tonumber(L, -1);
+    lua_pop(L, 2);
+    return ret;
+}
+
+glm::dvec2 aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number x1, lua_Number y1, lua_Number x2, lua_Number y2, lua_Number x3, lua_Number y3) {
+    getAULFunc(L, "interpolation");
+    size_t pushedNum = setArgs(L, time, x0, y0, x1, y1, x2, y2, x3, y3);
+    lua_call(L, pushedNum, 2);
+    glm::dvec2 ret;
+    ret.x = lua_tonumber(L, -2);
+    ret.y = lua_tonumber(L, -1);
+    lua_pop(L, 3);
+    return ret;
+}
+
+glm::dvec3 aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number z0, lua_Number x1, lua_Number y1, lua_Number z1,
+                              lua_Number x2, lua_Number y2, lua_Number z2, lua_Number x3, lua_Number y3, lua_Number z3) {
+    getAULFunc(L, "interpolation");
+    size_t pushedNum = setArgs(L, time, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+    lua_call(L, pushedNum, 3);
+    glm::dvec3 ret;
+    ret.x = lua_tonumber(L, -3);
+    ret.y = lua_tonumber(L, -2);
+    ret.z = lua_tonumber(L, -1);
+    lua_pop(L, 4);
     return ret;
 }
 
