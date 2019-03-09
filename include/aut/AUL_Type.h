@@ -49,10 +49,10 @@ namespace aut{
 
     // getpixel, putpixel等で使うYCbCr用の構造体
     struct Pixel_YC {
-        unsigned short y;
+        short y;
         short cb, cr;
         unsigned short a;
-        Pixel_YC(unsigned short ay, short acb, short acr, unsigned short aa)
+        Pixel_YC(short ay, short acb, short acr, unsigned short aa)
             :y(ay), cb(acb), cr(acr), a(aa) {}
         Pixel_YC() {
             Pixel_YC(0, 0, 0, 0);
