@@ -70,6 +70,7 @@ namespace aut {
     bool copybuffer(lua_State *L, const std::string &dst, const std::string &src);
     Pixel_Col getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
     Pixel_RGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
+    Pixel_YC getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y);
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
     template<typename... Parms>
@@ -458,6 +459,18 @@ aut::Pixel_RGBA aut::getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y) {
     return ret;
 }
 
+aut::Pixel_YC aut::getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y) {
+    getAULFunc(L, "getpixel");
+    size_t pushedNum = setArgs(L, x, y, "yc");
+    lua_call(L, pushedNum, 4);
+    Pixel_YC ret;
+    ret.y  = static_cast<short>(lua_tointeger(L, -4));
+    ret.cb = static_cast<short>(lua_tointeger(L, -3));
+    ret.cr = static_cast<short>(lua_tointeger(L, -2));
+    ret.a  = static_cast<unsigned short>(lua_tointeger(L, -1));
+    lua_pop(L, 5);
+    return ret;
+}
 
 template<typename... Parms>
 void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms) {
