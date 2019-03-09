@@ -83,6 +83,9 @@ namespace aut {
     template<typename... Parms>
     void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, Parms... parms);
     void putpixeldata(lua_State *L, Pixel_RGBA *data);
+    std::string getinfo_script_path(lua_State *L);
+    bool getinfo_saving(lua_State *L);
+    Size_2D getinfo_image_max(lua_State *L);
 }
 
 void aut::getAULFunc(lua_State *L, const std::string &funcName) {
@@ -550,6 +553,35 @@ void aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
     lua_pushlightuserdata(L, data);
     lua_call(L, 1, 0);
     lua_pop(L, 1);
+}
+
+std::string aut::getinfo_script_path(lua_State *L) {
+    getAULFunc(L, "getinfo");
+    size_t pushedNum = setArgs(L, "script_path");
+    lua_call(L, pushedNum, 1);
+    std::string ret(lua_tostring(L, -1));
+    lua_pop(L, 2);
+    return ret;
+}
+
+bool aut::getinfo_saving(lua_State *L) {
+    getAULFunc(L, "getinfo");
+    size_t pushedNum = setArgs(L, "saving");
+    lua_call(L, pushedNum, 1);
+    bool ret = static_cast<bool>(lua_toboolean(L, -1));
+    lua_pop(L, 2);
+    return ret;
+}
+
+aut::Size_2D aut::getinfo_image_max(lua_State *L) {
+    getAULFunc(L, "getinfo");
+    size_t pushedNum = setArgs(L, "image_max");
+    lua_call(L, pushedNum, 2);
+    Size_2D ret;
+    ret.w = static_cast<unsigned int>(lua_tointeger(L, -2));
+    ret.h = static_cast<unsigned int>(lua_tointeger(L, -1));
+    lua_pop(L, 3);
+    return ret;
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_WRAPPER_H_
