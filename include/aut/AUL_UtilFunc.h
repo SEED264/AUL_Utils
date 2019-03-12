@@ -199,7 +199,7 @@ size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
     return setArgs(L, parms...) + pushedNum;
 }
 
-std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX) {
+std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableName, int maxNum) {
     std::vector<glm::dvec2> outVec;
     auto vStatus = getVariable(L, tableName);
     if (vStatus != kLuaVarNotFound) {
