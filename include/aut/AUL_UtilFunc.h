@@ -49,6 +49,7 @@ namespace aut {
     size_t setArgs(lua_State *L, T value, Parms... parms);
 
     std::vector<glm::dvec2> tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
+    std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
 }
 
 aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy) {
@@ -209,6 +210,26 @@ std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableN
             glm::dvec2 v;
             for(size_t j = 0; j < 2; j++) {
                 size_t index = 2 * i + j + 1;
+                if (index > tLen)break;
+                v[j] = gettable_Number(L, index);
+            }
+            outVec[i] = v;
+        }
+    }
+    lua_pop(L, 1);
+    return outVec;
+}
+
+std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableName, int maxNum) {
+    std::vector<glm::dvec3> outVec;
+    auto vStatus = getVariable(L, tableName);
+    if (vStatus != kLuaVarNotFound) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(std::ceil(static_cast<double>(tLen) / 3));
+        for (size_t i = 0; i < outVec.size(); i++) {
+            glm::dvec3 v;
+            for(size_t j = 0; j < 3; j++) {
+                size_t index = 3 * i + j + 1;
                 if (index > tLen)break;
                 v[j] = gettable_Number(L, index);
             }
