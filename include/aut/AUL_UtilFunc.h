@@ -49,7 +49,7 @@ namespace aut {
     size_t setArgs(lua_State *L, T value, Parms... parms);
 
     std::vector<glm::dvec2> tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
-    std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
+    std::vector<glm::dvec3> tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
 }
 
 aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy) {
