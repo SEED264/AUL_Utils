@@ -5,6 +5,11 @@
 
 #include <math.h>
 #include <cmath>
+#include <limits>
+#include <string>
+#include <vector>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 #include <lua.hpp>
 #include "aut/AUL_Type.h"
 
@@ -42,6 +47,8 @@ namespace aut {
     size_t setArgs(lua_State *L, T value);
     template <typename T, typename... Parms>
     size_t setArgs(lua_State *L, T value, Parms... parms);
+
+    std::vector<glm::dvec2> tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
 }
 
 aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy) {
@@ -190,6 +197,26 @@ template <typename T, typename... Parms>
 size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
     size_t pushedNum = aut::pushValue(L, value);
     return setArgs(L, parms...) + pushedNum;
+}
+
+std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX) {
+    std::vector<glm::dvec2> outVec;
+    auto vStatus = getVariable(L, tableName);
+    if (vStatus != kLuaVarNotFound) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(std::ceil(static_cast<double>(tLen) / 2));
+        for (size_t i; i < outVec.size(); i++) {
+            glm::dvec2 v;
+            for(size_t j = 0; j < 2; j++) {
+                size_t index = 2 * i + j + 1;
+                if (index > tLen)break;
+                v[j] = gettable_Number(L, index);
+            }
+            outVec[i] = v;
+        }
+    }
+    lua_pop(L, 1);
+    return outVec;
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_UTILFUNC_H_
