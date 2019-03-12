@@ -205,7 +205,7 @@ std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableN
     if (vStatus != kLuaVarNotFound) {
         size_t tLen = lua_objlen(L, -1);
         outVec.resize(std::ceil(static_cast<double>(tLen) / 2));
-        for (size_t i; i < outVec.size(); i++) {
+        for (size_t i = 0; i < outVec.size(); i++) {
             glm::dvec2 v;
             for(size_t j = 0; j < 2; j++) {
                 size_t index = 2 * i + j + 1;
