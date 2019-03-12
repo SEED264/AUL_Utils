@@ -19,7 +19,9 @@ namespace aut {
     void effect(lua_State *L, Parms... parms);
     void draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0, double zoom = 1, double alpha = 1, double rx = 0, double ry = 0, double rz = 0);
     void drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
-                 double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0, double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX, double alpha = 1);
+                  double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0, double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX, double alpha = 1);
+    void drawpoly(lua_State *L, glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
+                  glm::dvec2 uv0 = glm::dvec2(0, 0), glm::dvec2 uv1 = glm::dvec2(USHRT_MAX, 0), glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX), glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX), double alpha = 1);
     template <typename... Parms>
     void load(lua_State *L, Parms... parms);
     template <typename... Parms>
@@ -90,11 +92,17 @@ void aut::draw(lua_State *L, double ox, double oy, double oz, double zoom, doubl
 }
 
 void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
-             double u0, double v0, double u1, double v1, double u2, double v2, double u3, double v3, double alpha) {
+                   double u0, double v0, double u1, double v1, double u2, double v2, double u3, double v3, double alpha) {
     getAULFunc(L, "drawpoly");
     size_t pushedNum = setArgs(L, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3, alpha);
     lua_call(L, pushedNum, 0);
     lua_pop(L, 1);
+}
+
+void aut::drawpoly(lua_State *L, glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
+                   glm::dvec2 uv0 = glm::dvec2(0, 0), glm::dvec2 uv1 = glm::dvec2(USHRT_MAX, 0), glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX), glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX), double alpha = 1) {
+    drawpoly(L, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p2.y, p3.z,
+             uv0.x, uv0.y, uv1.x, uv1.y, uv2.x, uv2.y, uv3.x, uv3.y, alpha);
 }
 
 template <typename... Parms>
