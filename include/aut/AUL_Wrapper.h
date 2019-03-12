@@ -100,7 +100,7 @@ void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, dou
 }
 
 void aut::drawpoly(lua_State *L, glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
-                   glm::dvec2 uv0 = glm::dvec2(0, 0), glm::dvec2 uv1 = glm::dvec2(USHRT_MAX, 0), glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX), glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX), double alpha = 1) {
+                   glm::dvec2 uv0, glm::dvec2 uv1, glm::dvec2 uv2, glm::dvec2 uv3, double alpha) {
     drawpoly(L, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p2.y, p3.z,
              uv0.x, uv0.y, uv1.x, uv1.y, uv2.x, uv2.y, uv3.x, uv3.y, alpha);
 }
