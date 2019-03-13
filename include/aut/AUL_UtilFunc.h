@@ -55,6 +55,11 @@ namespace aut {
 
     std::vector<glm::dvec2> tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
     std::vector<glm::dvec3> tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
+
+    template <typename T>
+    std::string& combineAsString(T value);
+    template <typename T, typename... Parms>
+    std::string& combineAsString(T value, Parms... parms);
 }
 
 aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy) {
@@ -299,6 +304,16 @@ std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableN
     }
     lua_pop(L, 1);
     return outVec;
+}
+
+template <typename T>
+std::string& combineAsString(T value) {
+    return std::to_string(value);
+}
+
+template <typename T, typename... Parms>
+std::string& combineAsString(T value, Parms... parms) {
+    return std::to_string(value) + combineAsString(parms...);
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_UTILFUNC_H_
