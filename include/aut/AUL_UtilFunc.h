@@ -2,12 +2,14 @@
 #define _AUL_UTILS_INCLUDE_AUT_AUL_UTILFUNC_H_
 
 #define _USE_MATH_DEFINES
+#define NOMINMAX
 
 #include <math.h>
 #include <cmath>
 #include <limits>
 #include <string>
 #include <vector>
+#include <debugapi.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <lua.hpp>
@@ -60,6 +62,9 @@ namespace aut {
     std::string& combineAsString(T value);
     template <typename T, typename... Parms>
     std::string& combineAsString(T value, Parms... parms);
+
+    template <typename... T>
+    void debug_print(T... values);
 }
 
 aut::LuaVarStatus aut::getVariable(lua_State *L, const std::string &name, size_t max_Local_Hierarchy) {
@@ -314,6 +319,12 @@ std::string& combineAsString(T value) {
 template <typename T, typename... Parms>
 std::string& combineAsString(T value, Parms... parms) {
     return std::to_string(value) + combineAsString(parms...);
+}
+
+template <typename... T>
+void debug_print(T... values) {
+    std::string str = combineAsString(values...);
+    OutputDebugString(str.c_str());
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_UTILFUNC_H_
