@@ -48,6 +48,8 @@ namespace aut {
     template <typename T, typename... Parms>
     size_t setArgs(lua_State *L, T value, Parms... parms);
 
+    std::vector<lua_Integer> tableToArray_Integer(lua_State *L, const std::string &name);
+
     std::vector<glm::dvec2> tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
     std::vector<glm::dvec3> tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
 }
@@ -198,6 +200,20 @@ template <typename T, typename... Parms>
 size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
     size_t pushedNum = aut::pushValue(L, value);
     return setArgs(L, parms...) + pushedNum;
+}
+
+std::vector<lua_Integer> aut::tableToArray_Integer(lua_State *L, const std::string &name) {
+    std::vector<lua_Integer> outVec;
+    auto vStatus = getVariable(L, name);
+    if (vStatus != kLuaVarNotFound) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(tLen);
+        for(size_t i = 0; i < outVec.size(); i++) {
+            outVec[i] = gettable_Integer(L, i+1);
+        }
+    }
+    lua_pop(L, 1);
+    return outVec;
 }
 
 std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableName, int maxNum) {
