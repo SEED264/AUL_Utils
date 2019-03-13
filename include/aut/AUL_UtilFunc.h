@@ -60,6 +60,7 @@ namespace aut {
 
     template <typename T>
     std::string combineAsString(T value);
+    std::string combineAsString(const char *value);
     std::string combineAsString(std::string &value);
     template <typename T, typename... Parms>
     std::string combineAsString(T value, Parms... parms);
@@ -321,6 +322,10 @@ std::string aut::combineAsString(T value) {
 
 std::string aut::combineAsString(std::string &value) {
     return value;
+}
+
+std::string aut::combineAsString(const char *value) {
+    return std::string(value);
 }
 
 template <typename T, typename... Parms>
