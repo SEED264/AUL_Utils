@@ -59,12 +59,12 @@ namespace aut {
     std::vector<glm::dvec3> tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
 
     template <typename T>
-    std::string& combineAsString(T value);
-    std::string& combineAsString(std::string &value);
+    std::string combineAsString(T value);
+    std::string combineAsString(std::string &value);
     template <typename T, typename... Parms>
-    std::string& combineAsString(T value, Parms... parms);
+    std::string combineAsString(T value, Parms... parms);
     template <typename... Parms>
-    std::string& combineAsString(const std::string &value, Parms... parms);
+    std::string combineAsString(const std::string &value, Parms... parms);
 
     template <typename... T>
     void debug_print(T... values);
@@ -315,21 +315,21 @@ std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableN
 }
 
 template <typename T>
-std::string& aut::combineAsString(T value) {
+std::string aut::combineAsString(T value) {
     return std::to_string(value);
 }
 
-std::string& aut::combineAsString(std::string &value) {
+std::string aut::combineAsString(std::string &value) {
     return value;
 }
 
 template <typename T, typename... Parms>
-std::string& aut::combineAsString(T value, Parms... parms) {
+std::string aut::combineAsString(T value, Parms... parms) {
     return combineAsString(value) + combineAsString(parms...);
 }
 
 template <typename... Parms>
-std::string& aut::combineAsString(const std::string &value, Parms... parms) {
+std::string aut::combineAsString(const std::string &value, Parms... parms) {
     return value + combineAsString(parms...);
 }
 
