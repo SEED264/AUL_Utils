@@ -312,17 +312,17 @@ std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableN
 }
 
 template <typename T>
-std::string& combineAsString(T value) {
+std::string& aut::combineAsString(T value) {
     return std::to_string(value);
 }
 
 template <typename T, typename... Parms>
-std::string& combineAsString(T value, Parms... parms) {
+std::string& aut::combineAsString(T value, Parms... parms) {
     return std::to_string(value) + combineAsString(parms...);
 }
 
 template <typename... T>
-void debug_print(T... values) {
+void aut::debug_print(T... values) {
     std::string str = combineAsString(values...);
     OutputDebugString(str.c_str());
 }
