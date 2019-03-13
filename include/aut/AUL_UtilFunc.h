@@ -278,7 +278,7 @@ std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableN
     auto vStatus = getVariable(L, tableName);
     if (vStatus != kLuaVarNotFound) {
         size_t tLen = lua_objlen(L, -1);
-        outVec.resize(std::ceil(static_cast<double>(tLen) / 2));
+        outVec.resize(static_cast<size_t>(std::ceil(static_cast<double>(tLen) / 2)));
         for (size_t i = 0; i < outVec.size(); i++) {
             glm::dvec2 v;
             for(size_t j = 0; j < 2; j++) {
@@ -298,7 +298,7 @@ std::vector<glm::dvec3> aut::tableToVec3(lua_State *L, const std::string &tableN
     auto vStatus = getVariable(L, tableName);
     if (vStatus != kLuaVarNotFound) {
         size_t tLen = lua_objlen(L, -1);
-        outVec.resize(std::ceil(static_cast<double>(tLen) / 3));
+        outVec.resize(static_cast<size_t>(std::ceil(static_cast<double>(tLen) / 3)));
         for (size_t i = 0; i < outVec.size(); i++) {
             glm::dvec3 v;
             for(size_t j = 0; j < 3; j++) {
