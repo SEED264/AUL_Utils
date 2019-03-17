@@ -86,6 +86,11 @@ namespace aut {
     template <typename T, typename... Parms>
     size_t setArgs(lua_State *L, T value, Parms... parms);
 
+    std::vector<bool> toarray_Boolean(lua_State *L, int tableIndex = -1);
+    std::vector<lua_Integer> toarray_Integer(lua_State *L, int tableIndex = -1);
+    std::vector<lua_Number> toarray_Number(lua_State *L, int tableIndex = -1);
+    std::vector<std::string> toarray_String(lua_State *L, int tableIndex = -1);
+
     std::vector<bool> toarray_Boolean(lua_State *L, const std::string &name);
     std::vector<lua_Integer> toarray_Integer(lua_State *L, const std::string &name);
     std::vector<lua_Number> toarray_Number(lua_State *L, const std::string &name);
@@ -319,6 +324,54 @@ template <typename T, typename... Parms>
 size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
     size_t pushedNum = aut::pushValue(L, value);
     return setArgs(L, parms...) + pushedNum;
+}
+
+std::vector<bool> aut::toarray_Boolean(lua_State *L, int tableIndex = -1) {
+    std::vector<bool> outVec;
+    if (lua_istable(L, tableIndex)) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(tLen);
+        for(size_t i = 0; i < outVec.size(); i++) {
+            outVec[i] = gettable_Boolean(L, i+1);
+        }
+    }
+    return outVec;
+}
+
+std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, int tableIndex = -1) {
+    std::vector<lua_Integer> outVec;
+    if (lua_istable(L, tableIndex)) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(tLen);
+        for(size_t i = 0; i < outVec.size(); i++) {
+            outVec[i] = gettable_Integer(L, i+1);
+        }
+    }
+    return outVec;
+}
+
+std::vector<lua_Number> aut::toarray_Number(lua_State *L, int tableIndex = -1) {
+    std::vector<lua_Number> outVec;
+    if (lua_istable(L, tableIndex)) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(tLen);
+        for(size_t i = 0; i < outVec.size(); i++) {
+            outVec[i] = gettable_Number(L, i+1);
+        }
+    }
+    return outVec;
+}
+
+std::vector<std::string> aut::toarray_String(lua_State *L, int tableIndex = -1) {
+    std::vector<std::string> outVec;
+    if (lua_istable(L, tableIndex)) {
+        size_t tLen = lua_objlen(L, -1);
+        outVec.resize(tLen);
+        for(size_t i = 0; i < outVec.size(); i++) {
+            outVec[i] = std::string(gettable_String(L, i+1));
+        }
+    }
+    return outVec;
 }
 
 std::vector<bool> aut::toarray_Boolean(lua_State *L, const std::string &name) {
