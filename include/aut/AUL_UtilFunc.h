@@ -329,7 +329,7 @@ size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
 std::vector<bool> aut::toarray_Boolean(lua_State *L, int tableIndex) {
     std::vector<bool> outVec;
     if (lua_istable(L, tableIndex)) {
-        size_t tLen = lua_objlen(L, -1);
+        size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
             outVec[i] = gettable_Boolean(L, i+1);
@@ -341,7 +341,7 @@ std::vector<bool> aut::toarray_Boolean(lua_State *L, int tableIndex) {
 std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, int tableIndex) {
     std::vector<lua_Integer> outVec;
     if (lua_istable(L, tableIndex)) {
-        size_t tLen = lua_objlen(L, -1);
+        size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
             outVec[i] = gettable_Integer(L, i+1);
@@ -353,7 +353,7 @@ std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, int tableIndex) {
 std::vector<lua_Number> aut::toarray_Number(lua_State *L, int tableIndex) {
     std::vector<lua_Number> outVec;
     if (lua_istable(L, tableIndex)) {
-        size_t tLen = lua_objlen(L, -1);
+        size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
             outVec[i] = gettable_Number(L, i+1);
@@ -365,7 +365,7 @@ std::vector<lua_Number> aut::toarray_Number(lua_State *L, int tableIndex) {
 std::vector<std::string> aut::toarray_String(lua_State *L, int tableIndex) {
     std::vector<std::string> outVec;
     if (lua_istable(L, tableIndex)) {
-        size_t tLen = lua_objlen(L, -1);
+        size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
             outVec[i] = std::string(gettable_String(L, i+1));
