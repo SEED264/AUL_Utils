@@ -64,6 +64,15 @@ namespace aut {
     const char* gettable_String(lua_State *L, int index, int tableIndex = -1);
     void* gettable_Userdata(lua_State *L, int index, int tableIndex = -1);
 
+    template<typename T>
+    void settable_Boolean(lua_State *L, std::vector<T> vec);
+    template<typename T>
+    void settable_Integer(lua_State *L, std::vector<T> vec);
+    template<typename T>
+    void settable_Number(lua_State *L, std::vector<T> vec);
+    void settable_String(lua_State *L, std::vector<std::string> vec);
+    void settable_String(lua_State *L, std::vector<const char*> vec);
+
     size_t pushValue(lua_State *L, void *v);
     size_t pushValue(lua_State *L, lua_Integer v);
     size_t pushValue(lua_State *L, const std::string &v);
@@ -202,6 +211,69 @@ void* aut::gettable_Userdata(lua_State *L, int index, int tableIndex) {
     void *ret = lua_touserdata(L, -1);
     lua_pop(L, 1);
     return ret;
+}
+
+template<typename T>
+void aut::settable_Boolean(lua_State *L, std::vector<T> vec) {
+    size_t v_size = vec.size();
+    if (v_size != 0) {
+        lua_createtable(L, v_size, 0);
+        for(size_t i = 0; i < v_size; i++) {
+            pushValue(L, i + 1);
+            pushBool(L, static_cast<bool>(vec[i]));
+            lua_settable(L, -3);
+        }
+    }
+}
+
+template<typename T>
+void aut::settable_Integer(lua_State *L, std::vector<T> vec) {
+    size_t v_size = vec.size();
+    if (v_size != 0) {
+        lua_createtable(L, v_size, 0);
+        for(size_t i = 0; i < v_size; i++) {
+            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Integer>(vec[i]));
+            lua_settable(L, -3);
+        }
+    }
+}
+
+template<typename T>
+void aut::settable_Number(lua_State *L, std::vector<T> vec) {
+    size_t v_size = vec.size();
+    if (v_size != 0) {
+        lua_createtable(L, v_size, 0);
+        for(size_t i = 0; i < v_size; i++) {
+            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Number>(vec[i]));
+            lua_settable(L, -3);
+        }
+    }
+}
+
+void aut::settable_String(lua_State *L, std::vector<std::string> vec) {
+    size_t v_size = vec.size();
+    if (v_size != 0) {
+        lua_createtable(L, v_size, 0);
+        for(size_t i = 0; i < v_size; i++) {
+            pushValue(L, i + 1);
+            pushValue(L, vec[i]);
+            lua_settable(L, -3);
+        }
+    }
+}
+
+void aut::settable_String(lua_State *L, std::vector<const char*> vec) {
+    size_t v_size = vec.size();
+    if (v_size != 0) {
+        lua_createtable(L, v_size, 0);
+        for(size_t i = 0; i < v_size; i++) {
+            pushValue(L, i + 1);
+            pushValue(L, vec[i]);
+            lua_settable(L, -3);
+        }
+    }
 }
 
 size_t aut::pushValue(lua_State *L, void *v) {
