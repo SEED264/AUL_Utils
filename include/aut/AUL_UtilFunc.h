@@ -219,7 +219,7 @@ void aut::settable_Boolean(lua_State *L, std::vector<T> vec) {
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
         for(size_t i = 0; i < v_size; i++) {
-            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Integer>(i + 1));
             pushBool(L, static_cast<bool>(vec[i]));
             lua_settable(L, -3);
         }
@@ -232,7 +232,7 @@ void aut::settable_Integer(lua_State *L, std::vector<T> vec) {
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
         for(size_t i = 0; i < v_size; i++) {
-            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Integer>(i + 1));
             pushValue(L, static_cast<lua_Integer>(vec[i]));
             lua_settable(L, -3);
         }
@@ -245,7 +245,7 @@ void aut::settable_Number(lua_State *L, std::vector<T> vec) {
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
         for(size_t i = 0; i < v_size; i++) {
-            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Integer>(i + 1));
             pushValue(L, static_cast<lua_Number>(vec[i]));
             lua_settable(L, -3);
         }
@@ -257,7 +257,7 @@ void aut::settable_String(lua_State *L, std::vector<std::string> vec) {
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
         for(size_t i = 0; i < v_size; i++) {
-            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Integer>(i + 1));
             pushValue(L, vec[i]);
             lua_settable(L, -3);
         }
@@ -269,7 +269,7 @@ void aut::settable_String(lua_State *L, std::vector<const char*> vec) {
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
         for(size_t i = 0; i < v_size; i++) {
-            pushValue(L, i + 1);
+            pushValue(L, static_cast<lua_Integer>(i + 1));
             pushValue(L, vec[i]);
             lua_settable(L, -3);
         }
