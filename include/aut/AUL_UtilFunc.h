@@ -332,7 +332,7 @@ std::vector<bool> aut::toarray_Boolean(lua_State *L, int tableIndex) {
         size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = gettable_Boolean(L, i+1);
+            outVec[i] = gettable_Boolean(L, i+1, tableIndex);
         }
     }
     return outVec;
@@ -344,7 +344,7 @@ std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, int tableIndex) {
         size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = gettable_Integer(L, i+1);
+            outVec[i] = gettable_Integer(L, i+1, tableIndex);
         }
     }
     return outVec;
@@ -356,7 +356,7 @@ std::vector<lua_Number> aut::toarray_Number(lua_State *L, int tableIndex) {
         size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = gettable_Number(L, i+1);
+            outVec[i] = gettable_Number(L, i+1, tableIndex);
         }
     }
     return outVec;
@@ -368,7 +368,7 @@ std::vector<std::string> aut::toarray_String(lua_State *L, int tableIndex) {
         size_t tLen = lua_objlen(L, tableIndex);
         outVec.resize(tLen);
         for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = std::string(gettable_String(L, i+1));
+            outVec[i] = std::string(gettable_String(L, i+1, tableIndex));
         }
     }
     return outVec;
