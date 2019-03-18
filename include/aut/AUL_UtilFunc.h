@@ -375,59 +375,43 @@ std::vector<std::string> aut::toarray_String(lua_State *L, int tableIndex) {
 }
 
 std::vector<bool> aut::toarray_Boolean(lua_State *L, const std::string &name) {
-    std::vector<bool> outVec;
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        size_t tLen = lua_objlen(L, -1);
-        outVec.resize(tLen);
-        for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = gettable_Boolean(L, i+1);
-        }
+        std::vector<bool> outVec = toarray_Boolean(L);
+        lua_pop(L, 1);
+        return outVec;
     }
-    lua_pop(L, 1);
-    return outVec;
+    return std::vector<bool>();
 }
 
 std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, const std::string &name) {
-    std::vector<lua_Integer> outVec;
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        size_t tLen = lua_objlen(L, -1);
-        outVec.resize(tLen);
-        for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = gettable_Integer(L, i+1);
-        }
+        std::vector<lua_Integer> outVec = toarray_Integer(L);
+        lua_pop(L, 1);
+        return outVec;
     }
-    lua_pop(L, 1);
-    return outVec;
+    return std::vector<lua_Integer>();
 }
 
 std::vector<lua_Number> aut::toarray_Number(lua_State *L, const std::string &name) {
-    std::vector<lua_Number> outVec;
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        size_t tLen = lua_objlen(L, -1);
-        outVec.resize(tLen);
-        for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = gettable_Number(L, i+1);
-        }
+        std::vector<lua_Number> outVec = toarray_Number(L);
+        lua_pop(L, 1);
+        return outVec;
     }
-    lua_pop(L, 1);
-    return outVec;
+    return std::vector<lua_Number>();
 }
 
 std::vector<std::string> aut::toarray_String(lua_State *L, const std::string &name) {
-    std::vector<std::string> outVec;
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        size_t tLen = lua_objlen(L, -1);
-        outVec.resize(tLen);
-        for(size_t i = 0; i < outVec.size(); i++) {
-            outVec[i] = std::string(gettable_String(L, i+1));
-        }
+        std::vector<std::string> outVec = toarray_String(L);
+        lua_pop(L, 1);
+        return outVec;
     }
-    lua_pop(L, 1);
-    return outVec;
+    return std::vector<std::string>();
 }
 
 std::vector<glm::dvec2> aut::tableToVec2(lua_State *L, const std::string &tableName, int maxNum) {
