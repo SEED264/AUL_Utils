@@ -52,11 +52,11 @@ namespace aut {
     bool getGlobalVariable(lua_State *L, const std::string &name);
     bool getLocalVariable(lua_State *L, const std::string &name, size_t max_Hierarchy = UCHAR_MAX);
 
-    bool getfield_Boolean(lua_State *L, const std::string &name);
-    lua_Integer getfield_Integer(lua_State *L, const std::string &name);
-    lua_Number getfield_Number(lua_State *L, const std::string &name);
-    const char* getfield_String(lua_State *L, const std::string &name);
-    void* getfield_Userdata(lua_State *L, const std::string &name);
+    bool getField_Boolean(lua_State *L, const std::string &name);
+    lua_Integer getField_Integer(lua_State *L, const std::string &name);
+    lua_Number getField_Number(lua_State *L, const std::string &name);
+    const char* getField_String(lua_State *L, const std::string &name);
+    void* getField_Userdata(lua_State *L, const std::string &name);
 
     bool gettable_Boolean(lua_State *L, int index, int tableIndex = -1);
     lua_Integer gettable_Integer(lua_State *L, int index, int tableIndex = -1);
@@ -65,13 +65,13 @@ namespace aut {
     void* gettable_Userdata(lua_State *L, int index, int tableIndex = -1);
 
     template<typename T>
-    void pusharray_Boolean(lua_State *L, std::vector<T> vec);
+    void pushArray_Boolean(lua_State *L, std::vector<T> vec);
     template<typename T>
-    void pusharray_Integer(lua_State *L, std::vector<T> vec);
+    void pushArray_Integer(lua_State *L, std::vector<T> vec);
     template<typename T>
-    void pusharray_Number(lua_State *L, std::vector<T> vec);
-    void pusharray_String(lua_State *L, std::vector<std::string> vec);
-    void pusharray_String(lua_State *L, std::vector<const char*> vec);
+    void pushArray_Number(lua_State *L, std::vector<T> vec);
+    void pushArray_String(lua_State *L, std::vector<std::string> vec);
+    void pushArray_String(lua_State *L, std::vector<const char*> vec);
 
     size_t pushValue(lua_State *L, void *v);
     size_t pushValue(lua_State *L, lua_Integer v);
@@ -86,15 +86,15 @@ namespace aut {
     template <typename T, typename... Parms>
     size_t setArgs(lua_State *L, T value, Parms... parms);
 
-    std::vector<bool> toarray_Boolean(lua_State *L, int tableIndex = -1);
-    std::vector<lua_Integer> toarray_Integer(lua_State *L, int tableIndex = -1);
-    std::vector<lua_Number> toarray_Number(lua_State *L, int tableIndex = -1);
-    std::vector<std::string> toarray_String(lua_State *L, int tableIndex = -1);
+    std::vector<bool> toArray_Boolean(lua_State *L, int tableIndex = -1);
+    std::vector<lua_Integer> toArray_Integer(lua_State *L, int tableIndex = -1);
+    std::vector<lua_Number> toArray_Number(lua_State *L, int tableIndex = -1);
+    std::vector<std::string> toArray_String(lua_State *L, int tableIndex = -1);
 
-    std::vector<bool> toarray_Boolean(lua_State *L, const std::string &name);
-    std::vector<lua_Integer> toarray_Integer(lua_State *L, const std::string &name);
-    std::vector<lua_Number> toarray_Number(lua_State *L, const std::string &name);
-    std::vector<std::string> toarray_String(lua_State *L, const std::string &name);
+    std::vector<bool> toArray_Boolean(lua_State *L, const std::string &name);
+    std::vector<lua_Integer> toArray_Integer(lua_State *L, const std::string &name);
+    std::vector<lua_Number> toArray_Number(lua_State *L, const std::string &name);
+    std::vector<std::string> toArray_String(lua_State *L, const std::string &name);
 
     std::vector<glm::dvec2> tableToVec2(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
     std::vector<glm::dvec3> tableToVec3(lua_State *L, const std::string &tableName, int maxNum = INT_MAX);
@@ -143,35 +143,35 @@ bool aut::getLocalVariable(lua_State *L, const std::string &name, size_t max_Hie
     return false;
 }
 
-bool aut::getfield_Boolean(lua_State *L, const std::string &name) {
+bool aut::getField_Boolean(lua_State *L, const std::string &name) {
     lua_getfield(L, -1, name.c_str());
     bool ret = static_cast<bool>(lua_toboolean(L, -1));
     lua_pop(L, 1);
     return ret;
 }
 
-lua_Integer aut::getfield_Integer(lua_State *L, const std::string &name) {
+lua_Integer aut::getField_Integer(lua_State *L, const std::string &name) {
     lua_getfield(L, -1, name.c_str());
     lua_Integer ret = lua_tointeger(L, -1);
     lua_pop(L, 1);
     return ret;
 }
 
-lua_Number aut::getfield_Number(lua_State *L, const std::string &name) {
+lua_Number aut::getField_Number(lua_State *L, const std::string &name) {
     lua_getfield(L, -1, name.c_str());
     lua_Number ret = lua_tonumber(L, -1);
     lua_pop(L, 1);
     return ret;
 }
 
-const char* aut::getfield_String(lua_State *L, const std::string &name) {
+const char* aut::getField_String(lua_State *L, const std::string &name) {
     lua_getfield(L, -1, name.c_str());
     const char *ret = lua_tostring(L, -1);
     lua_pop(L, 1);
     return ret;
 }
 
-void* aut::getfield_Userdata(lua_State *L, const std::string &name) {
+void* aut::getField_Userdata(lua_State *L, const std::string &name) {
     lua_getfield(L, -1, name.c_str());
     void *ret = lua_touserdata(L, -1);
     lua_pop(L, 1);
@@ -219,7 +219,7 @@ void* aut::gettable_Userdata(lua_State *L, int index, int tableIndex) {
 }
 
 template<typename T>
-void aut::pusharray_Boolean(lua_State *L, std::vector<T> vec) {
+void aut::pushArray_Boolean(lua_State *L, std::vector<T> vec) {
     size_t v_size = vec.size();
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
@@ -232,7 +232,7 @@ void aut::pusharray_Boolean(lua_State *L, std::vector<T> vec) {
 }
 
 template<typename T>
-void aut::pusharray_Integer(lua_State *L, std::vector<T> vec) {
+void aut::pushArray_Integer(lua_State *L, std::vector<T> vec) {
     size_t v_size = vec.size();
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
@@ -245,7 +245,7 @@ void aut::pusharray_Integer(lua_State *L, std::vector<T> vec) {
 }
 
 template<typename T>
-void aut::pusharray_Number(lua_State *L, std::vector<T> vec) {
+void aut::pushArray_Number(lua_State *L, std::vector<T> vec) {
     size_t v_size = vec.size();
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
@@ -257,7 +257,7 @@ void aut::pusharray_Number(lua_State *L, std::vector<T> vec) {
     }
 }
 
-void aut::pusharray_String(lua_State *L, std::vector<std::string> vec) {
+void aut::pushArray_String(lua_State *L, std::vector<std::string> vec) {
     size_t v_size = vec.size();
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
@@ -269,7 +269,7 @@ void aut::pusharray_String(lua_State *L, std::vector<std::string> vec) {
     }
 }
 
-void aut::pusharray_String(lua_State *L, std::vector<const char*> vec) {
+void aut::pushArray_String(lua_State *L, std::vector<const char*> vec) {
     size_t v_size = vec.size();
     if (v_size != 0) {
         lua_createtable(L, v_size, 0);
@@ -326,7 +326,7 @@ size_t aut::setArgs(lua_State *L, T value, Parms... parms) {
     return setArgs(L, parms...) + pushedNum;
 }
 
-std::vector<bool> aut::toarray_Boolean(lua_State *L, int tableIndex) {
+std::vector<bool> aut::toArray_Boolean(lua_State *L, int tableIndex) {
     std::vector<bool> outVec;
     if (lua_istable(L, tableIndex)) {
         size_t tLen = lua_objlen(L, tableIndex);
@@ -338,7 +338,7 @@ std::vector<bool> aut::toarray_Boolean(lua_State *L, int tableIndex) {
     return outVec;
 }
 
-std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, int tableIndex) {
+std::vector<lua_Integer> aut::toArray_Integer(lua_State *L, int tableIndex) {
     std::vector<lua_Integer> outVec;
     if (lua_istable(L, tableIndex)) {
         size_t tLen = lua_objlen(L, tableIndex);
@@ -350,7 +350,7 @@ std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, int tableIndex) {
     return outVec;
 }
 
-std::vector<lua_Number> aut::toarray_Number(lua_State *L, int tableIndex) {
+std::vector<lua_Number> aut::toArray_Number(lua_State *L, int tableIndex) {
     std::vector<lua_Number> outVec;
     if (lua_istable(L, tableIndex)) {
         size_t tLen = lua_objlen(L, tableIndex);
@@ -362,7 +362,7 @@ std::vector<lua_Number> aut::toarray_Number(lua_State *L, int tableIndex) {
     return outVec;
 }
 
-std::vector<std::string> aut::toarray_String(lua_State *L, int tableIndex) {
+std::vector<std::string> aut::toArray_String(lua_State *L, int tableIndex) {
     std::vector<std::string> outVec;
     if (lua_istable(L, tableIndex)) {
         size_t tLen = lua_objlen(L, tableIndex);
@@ -374,40 +374,40 @@ std::vector<std::string> aut::toarray_String(lua_State *L, int tableIndex) {
     return outVec;
 }
 
-std::vector<bool> aut::toarray_Boolean(lua_State *L, const std::string &name) {
+std::vector<bool> aut::toArray_Boolean(lua_State *L, const std::string &name) {
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        std::vector<bool> outVec = toarray_Boolean(L);
+        std::vector<bool> outVec = toArray_Boolean(L);
         lua_pop(L, 1);
         return outVec;
     }
     return std::vector<bool>();
 }
 
-std::vector<lua_Integer> aut::toarray_Integer(lua_State *L, const std::string &name) {
+std::vector<lua_Integer> aut::toArray_Integer(lua_State *L, const std::string &name) {
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        std::vector<lua_Integer> outVec = toarray_Integer(L);
+        std::vector<lua_Integer> outVec = toArray_Integer(L);
         lua_pop(L, 1);
         return outVec;
     }
     return std::vector<lua_Integer>();
 }
 
-std::vector<lua_Number> aut::toarray_Number(lua_State *L, const std::string &name) {
+std::vector<lua_Number> aut::toArray_Number(lua_State *L, const std::string &name) {
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        std::vector<lua_Number> outVec = toarray_Number(L);
+        std::vector<lua_Number> outVec = toArray_Number(L);
         lua_pop(L, 1);
         return outVec;
     }
     return std::vector<lua_Number>();
 }
 
-std::vector<std::string> aut::toarray_String(lua_State *L, const std::string &name) {
+std::vector<std::string> aut::toArray_String(lua_State *L, const std::string &name) {
     auto vStatus = getVariable(L, name);
     if (vStatus != kLuaVarNotFound) {
-        std::vector<std::string> outVec = toarray_String(L);
+        std::vector<std::string> outVec = toArray_String(L);
         lua_pop(L, 1);
         return outVec;
     }

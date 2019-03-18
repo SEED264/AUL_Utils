@@ -216,17 +216,17 @@ aut::Camera_Param aut::getoption_camera_param(lua_State *L) {
     size_t pushedNum = setArgs(L, "camera_param");
     lua_call(L, pushedNum, 1);
     Camera_Param cp;
-    cp.x  = getfield_Number(L, "x");
-    cp.y  = getfield_Number(L, "y");
-    cp.z  = getfield_Number(L, "z");
-    cp.tx = getfield_Number(L, "tx");
-    cp.ty = getfield_Number(L, "ty");
-    cp.tz = getfield_Number(L, "tz");
-    cp.rz = getfield_Number(L, "rz");
-    cp.ux = getfield_Number(L, "ux");
-    cp.uy = getfield_Number(L, "uy");
-    cp.uz = getfield_Number(L, "uz");
-    cp.d  = getfield_Number(L, "d");
+    cp.x  = getField_Number(L, "x");
+    cp.y  = getField_Number(L, "y");
+    cp.z  = getField_Number(L, "z");
+    cp.tx = getField_Number(L, "tx");
+    cp.ty = getField_Number(L, "ty");
+    cp.tz = getField_Number(L, "tz");
+    cp.rz = getField_Number(L, "rz");
+    cp.ux = getField_Number(L, "ux");
+    cp.uy = getField_Number(L, "uy");
+    cp.uz = getField_Number(L, "uz");
+    cp.d  = getField_Number(L, "d");
     lua_pop(L, 2);
     return cp;
 }
