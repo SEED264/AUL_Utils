@@ -75,6 +75,7 @@ namespace aut {
 
     size_t pushValue(lua_State *L, void *v);
     size_t pushValue(lua_State *L, lua_Integer v);
+    size_t pushValue(lua_State *L, unsigned long long v);
     size_t pushValue(lua_State *L, const std::string &v);
     size_t pushValue(lua_State *L, const char *v);
     size_t pushValue(lua_State *L, lua_Number v);
@@ -288,6 +289,11 @@ size_t aut::pushValue(lua_State *L, void *v) {
 
 size_t aut::pushValue(lua_State *L, lua_Integer v) {
     lua_pushinteger(L, v);
+    return 1;
+}
+
+size_t aut::pushValue(lua_State *L, unsigned long long v) {
+    lua_pushinteger(L, static_cast<lua_Integer>(v));
     return 1;
 }
 
