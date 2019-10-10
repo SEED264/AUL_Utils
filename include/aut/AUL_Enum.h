@@ -29,9 +29,9 @@
 
 namespace aut {
     enum LuaVarStatus :int {
-        kLuaVarNotFound = 0,
-        kLuaVarLocal = 1,
-        kLuaVarGlobal = 2
+        kAutLuaVarNotFound = 0,
+        kAutLuaVarLocal = 1,
+        kAutLuaVarGlobal = 2
     };
 }
 
