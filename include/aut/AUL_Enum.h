@@ -34,11 +34,6 @@ namespace aut {
         kAutLuaVarGlobal = 2
     };
 
-    enum SamplingNormalizedCoords :int {
-        kAutNormalizedCoordsFalse = 0,
-        kAutNormalizedCoordsTrue = 1
-    };
-
     enum SamplingAddressMode :int {
         kAutAddressBorder = 0,
         kAutAddressClamp = 1,
