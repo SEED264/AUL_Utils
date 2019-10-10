@@ -33,6 +33,23 @@ namespace aut {
         kAutLuaVarLocal = 1,
         kAutLuaVarGlobal = 2
     };
+
+    enum SamplingNormalizedCoords :int {
+        kAutNormalizedCoordsFalse = 0,
+        kAutNormalizedCoordsTrue = 1
+    };
+
+    enum SamplingAddressMode :int {
+        kAutAddressBorder = 0,
+        kAutAddressClamp = 1,
+        kAutAddressRepeat = 2,
+        kAutAddressMirror = 3
+    };
+
+    enum SamplingFilterMode :int {
+        kAutFilterNearest = 0,
+        kAutFilterLinear = 1
+    };
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_ENUM_H_
