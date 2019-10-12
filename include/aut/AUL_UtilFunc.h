@@ -48,69 +48,123 @@ namespace aut {
     inline double ToDegree(double rad) {
         return rad * 180 / M_PI;
     }
+    // Luaの変数を取得する関数
+    // ローカル->グローバルの順に探し、LuaVarStatusで探索の結果を返す
+    // 見つかった場合は、変数はスタックトップに積まれる
     LuaVarStatus GetVariable(lua_State *L, const std::string &name, size_t max_local_hierarchy = UCHAR_MAX);
+    // グローバル変数を取得する関数
+    // 変数が見つかった場合はtrue、見つからなかった(取得した中身がnilであった)場合はfalseを返す
+    // 見つかった場合は、変数はスタックトップに積まれる
     bool GetGlobalVariable(lua_State *L, const std::string &name);
+    // ローカル変数を取得する関数
+    // 変数が見つかった場合はtrue、見つからなかった場合はfalseを返す
+    // 見つかった場合は、変数はスタックトップに積まれる
     bool GetLocalVariable(lua_State *L, const std::string &name, size_t max_hierarchy = UCHAR_MAX);
 
+    // スタックの指定の位置に積まれたテーブルからnameを指定してbool値を取得する関数
     bool GetFieldBoolean(lua_State *L, const std::string &name, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからnameを指定して整数を取得する関数
     lua_Integer GetFieldInteger(lua_State *L, const std::string &name, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからnameを指定して浮動小数点数を取得する関数
     lua_Number GetFieldNumber(lua_State *L, const std::string &name, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからnameを指定して文字列を取得する関数
     const char* GetFieldString(lua_State *L, const std::string &name, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからnameを指定してユーザーデータのポインタを取得する関数
     void* GetFieldUserdata(lua_State *L, const std::string &name, int table_index = -1);
 
+    // スタックの指定の位置に積まれたテーブルからindexを指定してbool値を取得する関数
     bool GetTableBoolean(lua_State *L, int index, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからindexを指定して整数を取得する関数
     lua_Integer GetTableInteger(lua_State *L, int index, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからindexを指定して浮動小数点数を取得する関数
     lua_Number GetTableNumber(lua_State *L, int index, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからindexを指定して文字列を取得する関数
     const char* GetTableString(lua_State *L, int index, int table_index = -1);
+    // スタックの指定の位置に積まれたテーブルからindexを指定してユーザーデータのポインタを取得する関数
     void* GetTableUserdata(lua_State *L, int index, int table_index = -1);
 
+    // スタックトップにvecの配列の内容をbool値としてコピーしたテーブルを作成する関数
     template<typename T>
     void PushArrayBoolean(lua_State *L, std::vector<T> &vec);
+    // スタックトップにvecの配列の内容を整数としてコピーしたテーブルを作成する関数
     template<typename T>
     void PushArrayInteger(lua_State *L, std::vector<T> &vec);
+    // スタックトップにvecの配列の内容を浮動小数点数としてコピーしたテーブルを作成する関数
     template<typename T>
     void PushArrayNumber(lua_State *L, std::vector<T> &vec);
-    void PushArrayString(lua_State *L, std::vector<const char*> &vec);
+    // スタックトップにvecの配列の内容を文字列としてコピーしたテーブルを作成する関数
     void PushArrayString(lua_State *L, std::vector<std::string> &vec);
+    // スタックトップにvecの配列の内容を文字列としてコピーしたテーブルを作成する関数
     void PushArrayString(lua_State *L, std::vector<const char*> &vec);
 
+    // スタックトップにユーザーデータのポインタを積む関数
     size_t PushValue(lua_State *L, void *v);
+    // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, lua_Integer v);
+    // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, unsigned char v);
+    // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, unsigned short v);
+    // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, unsigned int v);
+    // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, unsigned long v);
+    // スタックトップに文字列を積む関数
     size_t PushValue(lua_State *L, const std::string &v);
+    // スタックトップに文字列を積む関数
     size_t PushValue(lua_State *L, const char *v);
+    // スタックトップに浮動小数点数を積む関数
     size_t PushValue(lua_State *L, lua_Number v);
+    // スタックトップにbool値を積む関数
     size_t pushBool(lua_State *L, bool v);
 
+    // スタックトップに引数を積む関数
+    // 実際に積んだ引数の数を返す
     size_t SetArgs(lua_State *L);
+    // スタックトップに引数を積む関数
+    // 実際に積んだ引数の数を返す
     template <typename T>
     size_t SetArgs(lua_State *L, T value);
+    // スタックトップに引数を積む関数
+    // 実際に積んだ引数の数を返す
     template <typename T, typename... Parms>
     size_t SetArgs(lua_State *L, T value, Parms... parms);
 
+    // 指定したテーブルの内容をbool値としてvectorにコピーする関数
     std::vector<bool> ToArrayBoolean(lua_State *L, int table_index = -1);
+    // 指定したテーブルの内容を整数としてvectorにコピーする関数
     std::vector<lua_Integer> ToArrayInteger(lua_State *L, int table_index = -1);
+    // 指定したテーブルの内容を浮動小数点数としてvectorにコピーする関数
     std::vector<lua_Number> ToArrayNumber(lua_State *L, int table_index = -1);
+    // 指定したテーブルの内容を文字列としてvectorにコピーする関数
     std::vector<std::string> ToArrayString(lua_State *L, int table_index = -1);
 
+    // 指定した名前のテーブルの内容をbool値としてvectorにコピーする関数
     std::vector<bool> ToArrayBoolean(lua_State *L, const std::string &name);
+    // 指定した名前のテーブルの内容を整数としてvectorにコピーする関数
     std::vector<lua_Integer> ToArrayInteger(lua_State *L, const std::string &name);
+    // 指定した名前のテーブルの内容を浮動小数点数としてvectorにコピーする関数
     std::vector<lua_Number> ToArrayNumber(lua_State *L, const std::string &name);
+    // 指定した名前のテーブルの内容を文字列としてvectorにコピーする関数
     std::vector<std::string> ToArrayString(lua_State *L, const std::string &name);
 
+    // 指定した名前のテーブルの内容をdvec2としてvectorにコピーする関数
     std::vector<glm::dvec2> TableToVec2(lua_State *L, const std::string &table_name, int max_num = INT_MAX);
+    // 指定した名前のテーブルの内容をdvec3としてvectorにコピーする関数
     std::vector<glm::dvec3> TableToVec3(lua_State *L, const std::string &table_name, int max_num = INT_MAX);
 
+    // 引数の値を文字列として結合する関数
     template <typename T>
     std::string CombineAsString(T value);
+    // 引数の値を文字列として結合する関数
     std::string CombineAsString(const char *value);
+    // 引数の値を文字列として結合する関数
     std::string CombineAsString(std::string &value);
+    // 引数の値を文字列として結合する関数
     template <typename T, typename... Parms>
     std::string CombineAsString(T value, Parms... parms);
 
+    // 受け取った引数をデバッグ出力する関数
     template <typename... T>
     void DebugPrint(T... values);
 }

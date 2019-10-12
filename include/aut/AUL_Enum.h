@@ -28,12 +28,14 @@
 #define _AUL_UTILS_INCLUDE_AUT_AUL_ENUM_H_
 
 namespace aut {
+    // GetVariable等で変数のステータスを表すための列挙型
     enum LuaVarStatus :int {
         kAutLuaVarNotFound = 0,
         kAutLuaVarLocal = 1,
         kAutLuaVarGlobal = 2
     };
 
+    // サンプリング関数のアドレッシングモード指定用列挙型
     enum SamplingAddressMode :int {
         kAutAddressBorder = 0,
         kAutAddressClamp = 1,
@@ -41,6 +43,7 @@ namespace aut {
         kAutAddressMirror = 3
     };
 
+    // サンプリング関数のフィルターモード指定用列挙型
     enum SamplingFilterMode :int {
         kAutFilterNearest = 0,
         kAutFilterLinear = 1

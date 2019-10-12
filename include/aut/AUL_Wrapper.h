@@ -39,6 +39,7 @@
 #include "aut/AUL_UtilFunc.h"
 
 namespace aut {
+    // obj空間の関数をスタックトップに積む関数
     void GetAULFunc(lua_State *L, const std::string &func_name);
 
     template <typename... Parms>
