@@ -45,6 +45,7 @@ namespace aut {
     template <typename... Parms>
     void effect(lua_State *L, Parms... parms);
     void draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0, double zoom = 1, double alpha = 1, double rx = 0, double ry = 0, double rz = 0);
+    void draw(lua_State *L, glm::dvec3 pos = glm::dvec3(0), double zoom = 1, double alpha = 1, glm::dvec3 rot = glm::dvec3(0));
     void drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
                   double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0, double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX, double alpha = 1);
     void drawpoly(lua_State *L, glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
@@ -114,6 +115,13 @@ void aut::effect(lua_State *L, Parms... parms) {
 void aut::draw(lua_State *L, double ox, double oy, double oz, double zoom, double alpha, double rx, double ry, double rz) {
     GetAULFunc(L, "draw");
     size_t pushed_num = SetArgs(L, ox, oy, oz, zoom, alpha, rx, ry, rz);
+    lua_call(L, pushed_num, 0);
+    lua_pop(L, 1);
+}
+
+void aut::draw(lua_State *L, glm::dvec3 pos, double zoom, double alpha, glm::dvec3 rot) {
+    GetAULFunc(L, "draw");
+    size_t pushed_num = SetArgs(L, pos.x, pos.y, pos.z, zoom, alpha, rot.x, rot.y, rot.z);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
