@@ -61,7 +61,7 @@ namespace aut {
     const char* getoption_script_name(lua_State *L, lua_Integer value = 0, bool skip = false);
     bool getoption_gui(lua_State *L);
     lua_Integer getoption_camera_mode(lua_State *L);
-    Camera_Param getoption_camera_param(lua_State *L);
+    CameraParam getoption_camera_param(lua_State *L);
     bool getoption_multi_object(lua_State *L);
     template<typename T, typename... Parms>
     lua_Number getvalue(lua_State *L, T target, Parms... parms);
@@ -71,24 +71,24 @@ namespace aut {
     template<typename... Parms>
     void filter(lua_State *L, const std::string &name, Parms... parms);
     bool copybuffer(lua_State *L, const std::string &dst, const std::string &src);
-    Pixel_Col getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
-    Pixel_RGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
-    Pixel_YC getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y);
-    Size_2D getpixel_size(lua_State *L);
-    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_Col pix);
-    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_RGBA pix);
-    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_YC pix);
+    PixelCol getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
+    PixelRGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
+    PixelYC getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y);
+    Size2D getpixel_size(lua_State *L);
+    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelCol pix);
+    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelRGBA pix);
+    void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelYC pix);
     void copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y, lua_Integer src_x, lua_Integer src_y);
     void pixeloption(lua_State *L, const std::string &name, const std::string &value);
     void pixeloption(lua_State *L, const std::string &name, lua_Integer value);
     template<typename... Parms>
-    void getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms);
+    void getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size, Parms... parms);
     template<typename... Parms>
-    void getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, Parms... parms);
-    void putpixeldata(lua_State *L, Pixel_RGBA *data);
+    void getpixeldata(lua_State *L, PixelRGBA **out_data, uint *out_w, uint *out_h, Parms... parms);
+    void putpixeldata(lua_State *L, PixelRGBA *data);
     std::string getinfo_script_path(lua_State *L);
     bool getinfo_saving(lua_State *L);
-    Size_2D getinfo_image_max(lua_State *L);
+    Size2D getinfo_image_max(lua_State *L);
     lua_Number interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number x1, lua_Number x2, lua_Number x3);
     glm::dvec2 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number x1, lua_Number y1, lua_Number x2, lua_Number y2, lua_Number x3, lua_Number y3);
     glm::dvec3 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number z0, lua_Number x1, lua_Number y1, lua_Number z1,
@@ -211,11 +211,11 @@ lua_Integer aut::getoption_camera_mode(lua_State *L) {
     return ret;
 }
 
-aut::Camera_Param aut::getoption_camera_param(lua_State *L) {
+aut::CameraParam aut::getoption_camera_param(lua_State *L) {
     GetAULFunc(L, "getoption");
     size_t pushed_num = SetArgs(L, "camera_param");
     lua_call(L, pushed_num, 1);
-    Camera_Param cp;
+    CameraParam cp;
     cp.x  = GetFieldNumber(L, "x");
     cp.y  = GetFieldNumber(L, "y");
     cp.z  = GetFieldNumber(L, "z");
@@ -312,22 +312,22 @@ bool aut::copybuffer(lua_State *L, const std::string &dst, const std::string &sr
     return ret;
 }
 
-aut::Pixel_Col aut::getpixel_col(lua_State *L, lua_Integer x, lua_Integer y) {
+aut::PixelCol aut::getpixel_col(lua_State *L, lua_Integer x, lua_Integer y) {
     GetAULFunc(L, "getpixel");
     size_t pushed_num = SetArgs(L, x, y, "col");
     lua_call(L, pushed_num, 2);
-    Pixel_Col ret;
+    PixelCol ret;
     ret.col = static_cast<unsigned long>(lua_tointeger(L, -2));
     ret.a = static_cast<float>(lua_tonumber(L, -1));
     lua_pop(L, 3);
     return ret;
 }
 
-aut::Pixel_RGBA aut::getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y) {
+aut::PixelRGBA aut::getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y) {
     GetAULFunc(L, "getpixel");
     size_t pushed_num = SetArgs(L, x, y, "rgb");
     lua_call(L, pushed_num, 4);
-    Pixel_RGBA ret;
+    PixelRGBA ret;
     ret.r = static_cast<byte>(lua_tointeger(L, -4));
     ret.g = static_cast<byte>(lua_tointeger(L, -3));
     ret.b = static_cast<byte>(lua_tointeger(L, -2));
@@ -336,11 +336,11 @@ aut::Pixel_RGBA aut::getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y) {
     return ret;
 }
 
-aut::Pixel_YC aut::getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y) {
+aut::PixelYC aut::getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y) {
     GetAULFunc(L, "getpixel");
     size_t pushed_num = SetArgs(L, x, y, "yc");
     lua_call(L, pushed_num, 4);
-    Pixel_YC ret;
+    PixelYC ret;
     ret.y  = static_cast<short>(lua_tointeger(L, -4));
     ret.cb = static_cast<short>(lua_tointeger(L, -3));
     ret.cr = static_cast<short>(lua_tointeger(L, -2));
@@ -349,29 +349,29 @@ aut::Pixel_YC aut::getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y) {
     return ret;
 }
 
-aut::Size_2D aut::getpixel_size(lua_State *L) {
+aut::Size2D aut::getpixel_size(lua_State *L) {
     GetAULFunc(L, "getpixel");
     lua_call(L, 0, 2);
-    Size_2D ret;
+    Size2D ret;
     ret.w = static_cast<unsigned int>(lua_tointeger(L, -2));
     ret.h = static_cast<unsigned int>(lua_tointeger(L, -1));
     lua_pop(L, 3);
     return ret;
 }
 
-void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_Col pix) {
+void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelCol pix) {
     GetAULFunc(L, "putpixel");
     size_t pushed_num = SetArgs(L, x, y, static_cast<lua_Integer>(pix.col), pix.a);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
-void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_RGBA pix) {
+void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelRGBA pix) {
     GetAULFunc(L, "putpixel");
     size_t pushed_num = SetArgs(L, x, y, pix.r, pix.g, pix.b, pix.a);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
-void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, Pixel_YC pix) {
+void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelYC pix) {
     GetAULFunc(L, "putpixel");
     size_t pushed_num = SetArgs(L, x, y, pix.y, pix.cb, pix.cr, pix.a);
     lua_call(L, pushed_num, 0);
@@ -400,22 +400,22 @@ void aut::pixeloption(lua_State *L, const std::string &name, lua_Integer value) 
 }
 
 template<typename... Parms>
-void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, Size_2D *out_size, Parms... parms) {
+void aut::getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size, Parms... parms) {
     getpixeldata(L, out_data, &out_size->w, &out_size->h, parms...);
 }
 
 template<typename... Parms>
-void aut::getpixeldata(lua_State *L, Pixel_RGBA **out_data, uint *out_w, uint *out_h, Parms... parms) {
+void aut::getpixeldata(lua_State *L, PixelRGBA **out_data, uint *out_w, uint *out_h, Parms... parms) {
     GetAULFunc(L, "getpixeldata");
     int pushed_num = SetArgs(L, parms...);
     lua_call(L, pushed_num, 3);
     *out_h = lua_tointeger(L, -1);
     *out_w = lua_tointeger(L, -2);
-    *out_data = reinterpret_cast<Pixel_RGBA*>(lua_touserdata(L, -3));
+    *out_data = reinterpret_cast<PixelRGBA*>(lua_touserdata(L, -3));
     lua_pop(L, 4);
 }
 
-void aut::putpixeldata(lua_State *L, Pixel_RGBA *data) {
+void aut::putpixeldata(lua_State *L, PixelRGBA *data) {
     GetAULFunc(L, "putpixeldata");
     lua_pushlightuserdata(L, data);
     lua_call(L, 1, 0);
@@ -440,11 +440,11 @@ bool aut::getinfo_saving(lua_State *L) {
     return ret;
 }
 
-aut::Size_2D aut::getinfo_image_max(lua_State *L) {
+aut::Size2D aut::getinfo_image_max(lua_State *L) {
     GetAULFunc(L, "getinfo");
     size_t pushed_num = SetArgs(L, "image_max");
     lua_call(L, pushed_num, 2);
-    Size_2D ret;
+    Size2D ret;
     ret.w = static_cast<unsigned int>(lua_tointeger(L, -2));
     ret.h = static_cast<unsigned int>(lua_tointeger(L, -1));
     lua_pop(L, 3);

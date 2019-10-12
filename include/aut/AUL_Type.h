@@ -34,28 +34,28 @@ namespace aut{
 
     // unsigned longの代わりのメモリ上の配置が同じになる構造体
     // メモリの配置順の都合上、内部の変数の順番はBGRAでなくてはならない
-    struct Pixel_RGBA {
+    struct PixelRGBA {
         byte b;
         byte g;
         byte r;
         byte a;
-        Pixel_RGBA(byte ar, byte ag, byte ab, byte aa):r(ar), g(ag), b(ab), a(aa) {}
-        Pixel_RGBA() {
-            Pixel_RGBA(0, 0, 0, 0);
+        PixelRGBA(byte ar, byte ag, byte ab, byte aa):r(ar), g(ag), b(ab), a(aa) {}
+        PixelRGBA() {
+            PixelRGBA(0, 0, 0, 0);
         }
     };
 
     // 画像のサイズ等に使う構造体
-    struct Size_2D{
+    struct Size2D{
         unsigned int w, h;
-        Size_2D(unsigned int aw, unsigned int ah):w(aw), h(ah) {}
-        Size_2D() {
-            Size_2D(0, 0);
+        Size2D(unsigned int aw, unsigned int ah):w(aw), h(ah) {}
+        Size2D() {
+            Size2D(0, 0);
         }
     };
 
     // カメラのパラメータ用の構造体
-    struct Camera_Param {
+    struct CameraParam {
         double  x,  y,  z;
         double tx, ty, tz;
         double rz;
@@ -64,24 +64,24 @@ namespace aut{
     };
 
     // getpixel, putpixel等で使うcol用の構造体
-    struct Pixel_Col {
+    struct PixelCol {
         unsigned long col;
         float a;
-        Pixel_Col(unsigned long acol, float aa):col(acol), a(aa) {}
-        Pixel_Col() {
-            Pixel_Col(0, 0);
+        PixelCol(unsigned long acol, float aa):col(acol), a(aa) {}
+        PixelCol() {
+            PixelCol(0, 0);
         }
     };
 
     // getpixel, putpixel等で使うYCbCr用の構造体
-    struct Pixel_YC {
+    struct PixelYC {
         short y;
         short cb, cr;
         unsigned short a;
-        Pixel_YC(short ay, short acb, short acr, unsigned short aa)
+        PixelYC(short ay, short acb, short acr, unsigned short aa)
             :y(ay), cb(acb), cr(acr), a(aa) {}
-        Pixel_YC() {
-            Pixel_YC(0, 0, 0, 0);
+        PixelYC() {
+            PixelYC(0, 0, 0, 0);
         }
     };
 }
