@@ -27,7 +27,6 @@
 #ifndef _AUL_UTILS_INCLUDE_AUT_AUL_UTILFUNC_H_
 #define _AUL_UTILS_INCLUDE_AUT_AUL_UTILFUNC_H_
 
-#define _USE_MATH_DEFINES
 #define NOMINMAX
 
 #include <limits>
