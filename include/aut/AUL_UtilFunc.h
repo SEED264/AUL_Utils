@@ -30,7 +30,6 @@
 #define _USE_MATH_DEFINES
 #define NOMINMAX
 
-#include <math.h>
 #include <cmath>
 #include <limits>
 #include <string>
