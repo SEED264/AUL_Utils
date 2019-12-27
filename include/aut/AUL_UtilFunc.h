@@ -32,7 +32,7 @@
 #include <limits>
 #include <string>
 #include <vector>
-#include <debugapi.h>
+#include <Windows.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <lua.hpp>
