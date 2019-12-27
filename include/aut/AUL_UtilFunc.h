@@ -105,8 +105,6 @@ namespace aut {
     // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, short v);
     // スタックトップに整数を積む関数
-    size_t PushValue(lua_State *L, int v);
-    // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, long v);
     // スタックトップに整数を積む関数
     size_t PushValue(lua_State *L, unsigned char v);
@@ -363,11 +361,6 @@ size_t aut::PushValue(lua_State *L, char v) {
 }
 
 size_t aut::PushValue(lua_State *L, short v) {
-    lua_pushinteger(L, static_cast<lua_Integer>(v));
-    return 1;
-}
-
-size_t aut::PushValue(lua_State *L, int v) {
     lua_pushinteger(L, static_cast<lua_Integer>(v));
     return 1;
 }
