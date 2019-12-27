@@ -30,7 +30,6 @@
 #define _USE_MATH_DEFINES
 #define NOMINMAX
 
-#include <cmath>
 #include <limits>
 #include <string>
 #include <vector>
@@ -41,11 +40,12 @@
 #include "aut/AUL_Type.h"
 
 namespace aut {
+    static const double pi = 3.14159265358979323846;
     inline double ToRadian(double deg) {
-        return deg * M_PI / 180;
+        return deg * pi / 180;
     }
     inline double ToDegree(double rad) {
-        return rad * 180 / M_PI;
+        return rad * 180 / pi;
     }
     // Luaの変数を取得する関数
     // ローカル->グローバルの順に探し、LuaVarStatusで探索の結果を返す
