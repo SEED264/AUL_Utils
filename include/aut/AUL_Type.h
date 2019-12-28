@@ -52,6 +52,9 @@ namespace aut{
         Size2D() {
             Size2D(0, 0);
         }
+        unsigned int Area() {
+            return w * h;
+        }
     };
 
     // カメラのパラメータ用の構造体
