@@ -42,12 +42,11 @@
 #include "aut/AUL_Type.h"
 
 namespace aut {
-    static const double pi = 3.14159265358979323846;
     inline double ToRadian(double deg) {
-        return deg * pi / 180;
+        return deg * M_PI / 180;
     }
     inline double ToDegree(double rad) {
-        return rad * 180 / pi;
+        return rad * 180 / M_PI;
     }
     // Luaの変数を取得する関数
     // ローカル->グローバルの順に探し、LuaVarStatusで探索の結果を返す
