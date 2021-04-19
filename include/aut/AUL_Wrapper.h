@@ -50,10 +50,14 @@ namespace aut {
     void draw(lua_State *L, glm::dvec3 pos = glm::dvec3(0),
               double zoom = 1, double alpha = 1, glm::dvec3 rot = glm::dvec3(0));
     void drawpoly(lua_State *L,
-                  double x0, double y0, double z0, double x1, double y1, double z1,
-                  double x2, double y2, double z2, double x3, double y3, double z3,
-                  double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0,
-                  double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX,
+                  double x0, double y0, double z0,
+                  double x1, double y1, double z1,
+                  double x2, double y2, double z2,
+                  double x3, double y3, double z3,
+                  double u0 = 0, double v0 = 0,
+                  double u1 = USHRT_MAX, double v1 = 0,
+                  double u2 = USHRT_MAX, double v2 = USHRT_MAX,
+                  double u3 = 0, double v3 = USHRT_MAX,
                   double alpha = 1);
     void drawpoly(lua_State *L,
                   glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
@@ -141,30 +145,43 @@ inline void aut::effect(lua_State *L, Parms... parms) {
     lua_pop(L, 1);
 }
 
-inline void aut::draw(lua_State *L, double ox, double oy, double oz, double zoom, double alpha, double rx, double ry, double rz) {
+inline void aut::draw(lua_State *L, double ox, double oy, double oz,
+                      double zoom, double alpha,
+                      double rx, double ry, double rz) {
     GetAULFunc(L, "draw");
     size_t pushed_num = SetArgs(L, ox, oy, oz, zoom, alpha, rx, ry, rz);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
 
-inline void aut::draw(lua_State *L, glm::dvec3 pos, double zoom, double alpha, glm::dvec3 rot) {
+inline void aut::draw(lua_State *L, glm::dvec3 pos,
+                      double zoom, double alpha, glm::dvec3 rot) {
     GetAULFunc(L, "draw");
     size_t pushed_num = SetArgs(L, pos.x, pos.y, pos.z, zoom, alpha, rot.x, rot.y, rot.z);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
 
-inline void aut::drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
-                   double u0, double v0, double u1, double v1, double u2, double v2, double u3, double v3, double alpha) {
+inline void aut::drawpoly(lua_State *L,
+                          double x0, double y0, double z0,
+                          double x1, double y1, double z1,
+                          double x2, double y2, double z2,
+                          double x3, double y3, double z3,
+                          double u0, double v0, double u1, double v1,
+                          double u2, double v2, double u3, double v3,
+                          double alpha) {
     GetAULFunc(L, "drawpoly");
-    size_t pushed_num = SetArgs(L, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3, alpha);
+    size_t pushed_num = SetArgs(L, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3,
+                                u0, v0, u1, v1, u2, v2, u3, v3, alpha);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
 
-inline void aut::drawpoly(lua_State *L, glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
-                   glm::dvec2 uv0, glm::dvec2 uv1, glm::dvec2 uv2, glm::dvec2 uv3, double alpha) {
+inline void aut::drawpoly(lua_State *L,
+                          glm::dvec3 p0, glm::dvec3 p1,
+                          glm::dvec3 p2, glm::dvec3 p3,
+                          glm::dvec2 uv0, glm::dvec2 uv1,
+                          glm::dvec2 uv2, glm::dvec2 uv3, double alpha) {
     drawpoly(L, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z,
              uv0.x, uv0.y, uv1.x, uv1.y, uv2.x, uv2.y, uv3.x, uv3.y, alpha);
 }
@@ -178,7 +195,8 @@ inline void aut::load(lua_State *L, Parms... parms) {
 }
 
 template <typename... Parms>
-inline void aut::setfont(lua_State *L, const std::string &name, double size, Parms... parms) {
+inline void aut::setfont(lua_State *L, const std::string &name, double size,
+                         Parms... parms) {
     aut::GetAULFunc(L, "setfont");
     size_t pushed_num = SetArgs(L, name, size, parms...);
     lua_call(L, pushed_num, 0);
@@ -186,7 +204,8 @@ inline void aut::setfont(lua_State *L, const std::string &name, double size, Par
 }
 
 template <typename... Parms>
-inline lua_Integer aut::rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Parms... parms) {
+inline lua_Integer aut::rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num,
+                             Parms... parms) {
     GetAULFunc(L, "rand");
     size_t pushed_num = SetArgs(L, st_num, ed_num, parms...);
     lua_call(L, pushed_num, 1);
@@ -221,7 +240,8 @@ inline lua_Integer aut::getoption_section_num(lua_State *L) {
     return ret;
 }
 
-inline const char* aut::getoption_script_name(lua_State *L, lua_Integer value, bool skip) {
+inline const char* aut::getoption_script_name(lua_State *L, lua_Integer value,
+                                              bool skip) {
     GetAULFunc(L, "getoption");
     size_t pushed_num = SetArgs(L, "script_name", value);
     pushed_num += pushBool(L, skip);
@@ -289,7 +309,8 @@ inline lua_Number aut::getvalue(lua_State *L, T target, Parms... parms) {
 }
 
 template<typename... Parms>
-inline lua_Integer aut::setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms) {
+inline lua_Integer aut::setanchor(lua_State *L, const std::string &name,
+                                  lua_Integer num, Parms... parms) {
     GetAULFunc(L, "setanchor");
     size_t pushed_num = SetArgs(L, name, num, parms...);
     lua_call(L, pushed_num, 1);
@@ -298,7 +319,10 @@ inline lua_Integer aut::setanchor(lua_State *L, const std::string &name, lua_Int
     return ret;
 }
 
-inline std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName, const std::string &file, const std::string &type, lua_Integer size, lua_Integer *out_dataNum, lua_Integer *out_samplingRate) {
+inline std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName,
+                                              const std::string &file, const std::string &type,
+                                              lua_Integer size, lua_Integer *out_dataNum,
+                                              lua_Integer *out_samplingRate) {
     GetAULFunc(L, "getaudio");
 
     bool return_buffer = false;
@@ -341,7 +365,8 @@ inline void aut::filter(lua_State *L, const std::string &name, Parms... parms) {
     lua_pop(L, 1);
 }
 
-inline bool aut::copybuffer(lua_State *L, const std::string &dst, const std::string &src) {
+inline bool aut::copybuffer(lua_State *L, const std::string &dst,
+                            const std::string &src) {
     GetAULFunc(L, "copybuffer");
     size_t pushed_num = SetArgs(L, dst, src);
     lua_call(L, pushed_num, 1);
@@ -416,14 +441,16 @@ inline void aut::putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelYC pi
     lua_pop(L, 1);
 }
 
-inline void aut::copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y, lua_Integer src_x, lua_Integer src_y) {
+inline void aut::copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y,
+                           lua_Integer src_x, lua_Integer src_y) {
     GetAULFunc(L, "copypixel");
     size_t pushed_num = SetArgs(L, dst_x, dst_y, src_x, src_y);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
 
-inline void aut::pixeloption(lua_State *L, const std::string &name, const std::string &value) {
+inline void aut::pixeloption(lua_State *L, const std::string &name,
+                             const std::string &value) {
     GetAULFunc(L, "pixeloption");
     size_t pushed_num = SetArgs(L, name, value);
     lua_call(L, pushed_num, 0);
@@ -438,12 +465,14 @@ inline void aut::pixeloption(lua_State *L, const std::string &name, lua_Integer 
 }
 
 template<typename... Parms>
-inline void aut::getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size, Parms... parms) {
+inline void aut::getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size,
+                              Parms... parms) {
     getpixeldata(L, out_data, &out_size->w, &out_size->h, parms...);
 }
 
 template<typename... Parms>
-inline void aut::getpixeldata(lua_State *L, PixelRGBA **out_data, uint *out_w, uint *out_h, Parms... parms) {
+inline void aut::getpixeldata(lua_State *L, PixelRGBA **out_data,
+                              uint *out_w, uint *out_h, Parms... parms) {
     GetAULFunc(L, "getpixeldata");
     int pushed_num = SetArgs(L, parms...);
     lua_call(L, pushed_num, 3);
@@ -489,7 +518,9 @@ inline aut::Size2D aut::getinfo_image_max(lua_State *L) {
     return ret;
 }
 
-inline lua_Number aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number x1, lua_Number x2, lua_Number x3) {
+inline lua_Number aut::interpolation(lua_State *L, lua_Number time,
+                                     lua_Number x0, lua_Number x1,
+                                     lua_Number x2, lua_Number x3) {
     GetAULFunc(L, "interpolation");
     size_t pushed_num = SetArgs(L, time, x0, x1, x2, x3);
     lua_call(L, pushed_num, 1);
@@ -498,7 +529,11 @@ inline lua_Number aut::interpolation(lua_State *L, lua_Number time, lua_Number x
     return ret;
 }
 
-inline glm::dvec2 aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number x1, lua_Number y1, lua_Number x2, lua_Number y2, lua_Number x3, lua_Number y3) {
+inline glm::dvec2 aut::interpolation(lua_State *L, lua_Number time,
+                                     lua_Number x0, lua_Number y0,
+                                     lua_Number x1, lua_Number y1,
+                                     lua_Number x2, lua_Number y2,
+                                     lua_Number x3, lua_Number y3) {
     GetAULFunc(L, "interpolation");
     size_t pushed_num = SetArgs(L, time, x0, y0, x1, y1, x2, y2, x3, y3);
     lua_call(L, pushed_num, 2);
@@ -509,8 +544,11 @@ inline glm::dvec2 aut::interpolation(lua_State *L, lua_Number time, lua_Number x
     return ret;
 }
 
-inline glm::dvec3 aut::interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number z0, lua_Number x1, lua_Number y1, lua_Number z1,
-                              lua_Number x2, lua_Number y2, lua_Number z2, lua_Number x3, lua_Number y3, lua_Number z3) {
+inline glm::dvec3 aut::interpolation(lua_State *L, lua_Number time,
+                                     lua_Number x0, lua_Number y0, lua_Number z0,
+                                     lua_Number x1, lua_Number y1, lua_Number z1,
+                                     lua_Number x2, lua_Number y2, lua_Number z2,
+                                     lua_Number x3, lua_Number y3, lua_Number z3) {
     GetAULFunc(L, "interpolation");
     size_t pushed_num = SetArgs(L, time, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3);
     lua_call(L, pushed_num, 3);
@@ -522,12 +560,17 @@ inline glm::dvec3 aut::interpolation(lua_State *L, lua_Number time, lua_Number x
     return ret;
 }
 
-inline glm::dvec2 aut::interpolation(lua_State *L, lua_Number time, const glm::dvec2 &p0, const glm::dvec2 &p1, const glm::dvec2 &p2, const glm::dvec2 &p3) {
+inline glm::dvec2 aut::interpolation(lua_State *L, lua_Number time,
+                                     const glm::dvec2 &p0, const glm::dvec2 &p1,
+                                     const glm::dvec2 &p2, const glm::dvec2 &p3) {
     return interpolation(L, time, p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
 }
 
-inline glm::dvec3 aut::interpolation(lua_State *L, lua_Number time, const glm::dvec3 &p0, const glm::dvec3 &p1, const glm::dvec3 &p2, const glm::dvec3 &p3) {
-    return interpolation(L, time, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);
+inline glm::dvec3 aut::interpolation(lua_State *L, lua_Number time,
+                                     const glm::dvec3 &p0, const glm::dvec3 &p1,
+                                     const glm::dvec3 &p2, const glm::dvec3 &p3) {
+    return interpolation(L, time, p0.x, p0.y, p0.z, p1.x, p1.y, p1.z,
+                         p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);
 }
 
 #endif // _AUL_UTILS_INCLUDE_AUT_AUL_WRAPPER_H_
