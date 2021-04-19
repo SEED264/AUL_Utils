@@ -44,12 +44,24 @@ namespace aut {
 
     template <typename... Parms>
     void effect(lua_State *L, Parms... parms);
-    void draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0, double zoom = 1, double alpha = 1, double rx = 0, double ry = 0, double rz = 0);
-    void draw(lua_State *L, glm::dvec3 pos = glm::dvec3(0), double zoom = 1, double alpha = 1, glm::dvec3 rot = glm::dvec3(0));
-    void drawpoly(lua_State *L, double x0, double y0, double z0, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3,
-                  double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0, double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX, double alpha = 1);
-    void drawpoly(lua_State *L, glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
-                  glm::dvec2 uv0 = glm::dvec2(0, 0), glm::dvec2 uv1 = glm::dvec2(USHRT_MAX, 0), glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX), glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX), double alpha = 1);
+    void draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0,
+              double zoom = 1, double alpha = 1,
+              double rx = 0, double ry = 0, double rz = 0);
+    void draw(lua_State *L, glm::dvec3 pos = glm::dvec3(0),
+              double zoom = 1, double alpha = 1, glm::dvec3 rot = glm::dvec3(0));
+    void drawpoly(lua_State *L,
+                  double x0, double y0, double z0, double x1, double y1, double z1,
+                  double x2, double y2, double z2, double x3, double y3, double z3,
+                  double u0 = 0, double v0 = 0, double u1 = USHRT_MAX, double v1 = 0,
+                  double u2 = USHRT_MAX, double v2 = USHRT_MAX, double u3 = 0, double v3 = USHRT_MAX,
+                  double alpha = 1);
+    void drawpoly(lua_State *L,
+                  glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
+                  glm::dvec2 uv0 = glm::dvec2(0, 0),
+                  glm::dvec2 uv1 = glm::dvec2(USHRT_MAX, 0),
+                  glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX),
+                  glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX),
+                  double alpha = 1);
     template <typename... Parms>
     void load(lua_State *L, Parms... parms);
     template <typename... Parms>
@@ -69,7 +81,10 @@ namespace aut {
     lua_Number getvalue(lua_State *L, T target, Parms... parms);
     template<typename... Parms>
     lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms);
-    std::vector<lua_Integer> getaudio(lua_State *L, const std::string &bufName, const std::string &file, const std::string &type, lua_Integer size, lua_Integer *out_dataNum = nullptr, lua_Integer *out_samplingRate = nullptr);
+    std::vector<lua_Integer> getaudio(lua_State *L, const std::string &bufName,
+                                      const std::string &file, const std::string &type,
+                                      lua_Integer size, lua_Integer *out_dataNum = nullptr,
+                                      lua_Integer *out_samplingRate = nullptr);
     template<typename... Parms>
     void filter(lua_State *L, const std::string &name, Parms... parms);
     bool copybuffer(lua_State *L, const std::string &dst, const std::string &src);
@@ -80,7 +95,8 @@ namespace aut {
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelCol pix);
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelRGBA pix);
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelYC pix);
-    void copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y, lua_Integer src_x, lua_Integer src_y);
+    void copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y,
+                   lua_Integer src_x, lua_Integer src_y);
     void pixeloption(lua_State *L, const std::string &name, const std::string &value);
     void pixeloption(lua_State *L, const std::string &name, lua_Integer value);
     template<typename... Parms>
@@ -91,12 +107,25 @@ namespace aut {
     std::string getinfo_script_path(lua_State *L);
     bool getinfo_saving(lua_State *L);
     Size2D getinfo_image_max(lua_State *L);
-    lua_Number interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number x1, lua_Number x2, lua_Number x3);
-    glm::dvec2 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number x1, lua_Number y1, lua_Number x2, lua_Number y2, lua_Number x3, lua_Number y3);
-    glm::dvec3 interpolation(lua_State *L, lua_Number time, lua_Number x0, lua_Number y0, lua_Number z0, lua_Number x1, lua_Number y1, lua_Number z1,
-                            lua_Number x2, lua_Number y2, lua_Number z2, lua_Number x3, lua_Number y3, lua_Number z3);
-    glm::dvec2 interpolation(lua_State *L, lua_Number time, const glm::dvec2 &p0, const glm::dvec2 &p1, const glm::dvec2 &p2, const glm::dvec2 &p3);
-    glm::dvec3 interpolation(lua_State *L, lua_Number time, const glm::dvec3 &p0, const glm::dvec3 &p1, const glm::dvec3 &p2, const glm::dvec3 &p3);
+    lua_Number interpolation(lua_State *L, lua_Number time,
+                             lua_Number x0, lua_Number x1,
+                             lua_Number x2, lua_Number x3);
+    glm::dvec2 interpolation(lua_State *L, lua_Number time,
+                             lua_Number x0, lua_Number y0,
+                             lua_Number x1, lua_Number y1,
+                             lua_Number x2, lua_Number y2,
+                             lua_Number x3, lua_Number y3);
+    glm::dvec3 interpolation(lua_State *L, lua_Number time,
+                             lua_Number x0, lua_Number y0, lua_Number z0,
+                             lua_Number x1, lua_Number y1, lua_Number z1,
+                             lua_Number x2, lua_Number y2, lua_Number z2,
+                             lua_Number x3, lua_Number y3, lua_Number z3);
+    glm::dvec2 interpolation(lua_State *L, lua_Number time,
+                             const glm::dvec2 &p0, const glm::dvec2 &p1,
+                             const glm::dvec2 &p2, const glm::dvec2 &p3);
+    glm::dvec3 interpolation(lua_State *L, lua_Number time,
+                             const glm::dvec3 &p0, const glm::dvec3 &p1,
+                             const glm::dvec3 &p2, const glm::dvec3 &p3);
 }
 
 inline void aut::GetAULFunc(lua_State *L, const std::string &func_name) {
