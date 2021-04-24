@@ -40,7 +40,8 @@ namespace aut{
         byte r;
         byte a;
 
-        PixelRGBA(byte ar, byte ag, byte ab, byte aa):r(ar), g(ag), b(ab), a(aa) {}
+        PixelRGBA(byte ar, byte ag, byte ab, byte aa) :
+            r(ar), g(ag), b(ab), a(aa) {}
         PixelRGBA() : PixelRGBA(0, 0, 0, 0) {}
     };
 
@@ -48,7 +49,7 @@ namespace aut{
     struct Size2D{
         unsigned int w, h;
 
-        Size2D(unsigned int aw, unsigned int ah):w(aw), h(ah) {}
+        Size2D(unsigned int aw, unsigned int ah) : w(aw), h(ah) {}
         Size2D() : Size2D(0, 0) {}
 
         unsigned int Area() {
@@ -70,7 +71,7 @@ namespace aut{
         unsigned long col;
         float a;
 
-        PixelCol(unsigned long acol, float aa):col(acol), a(aa) {}
+        PixelCol(unsigned long acol, float aa) : col(acol), a(aa) {}
         PixelCol() : PixelCol(0, 0.f) {}
     };
 
@@ -81,7 +82,7 @@ namespace aut{
         unsigned short a;
 
         PixelYC(short ay, short acb, short acr, unsigned short aa)
-            :y(ay), cb(acb), cr(acr), a(aa) {}
+            : y(ay), cb(acb), cr(acr), a(aa) {}
         PixelYC() : PixelYC(0, 0, 0, 0) {}
     };
 }
