@@ -38,8 +38,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <lua.hpp>
-#include "aut/AUL_Enum.h"
-#include "aut/AUL_Type.h"
+#include "./AUL_Enum.h"
+#include "./AUL_Type.h"
 
 namespace aut {
     inline double ToRadian(double deg) {

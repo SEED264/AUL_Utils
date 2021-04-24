@@ -34,9 +34,9 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <lua.hpp>
-#include "aut/AUL_Enum.h"
-#include "aut/AUL_Type.h"
-#include "aut/AUL_UtilFunc.h"
+#include "./AUL_Enum.h"
+#include "./AUL_Type.h"
+#include "./AUL_UtilFunc.h"
 
 namespace aut {
     // obj空間の関数をスタックトップに積む関数
