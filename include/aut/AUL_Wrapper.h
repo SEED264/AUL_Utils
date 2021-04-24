@@ -1,3 +1,9 @@
+/**
+ * @file AUL_Wrapper.h
+ * @author SEED264
+ * @brief Wrappers for Lua functions in AviUtl
+ */
+
 /*
  * This file is part of AUL_Utils.
  *
@@ -39,16 +45,58 @@
 #include "./AUL_UtilFunc.h"
 
 namespace aut {
-    // obj空間の関数をスタックトップに積む関数
+    /**
+     * Stack functions in obj space on the top of the stack
+     * 
+     * @param[in] func_name The name of the function that want to get
+     */
     void GetAULFunc(lua_State *L, const std::string &func_name);
 
+    /**
+     * Call obj.effect
+     * 
+     * @param[in] params Similar to obj.effect
+     */
     template <typename... Params>
     void effect(lua_State *L, Params... params);
+    /**
+     * Call obj.draw
+     * 
+     * @param[in] ox Relative coord X
+     * @param[in] oy Relative coord Y
+     * @param[in] oz Relative coord Z
+     * @param[in] zoom Enlargement rate (1.0 = 1x)
+     * @param[in] alpha Opacity (0.0 = transparent / 1.0 = opaque)
+     * @param[in] rx X-axis rotation angle (one rotation at 360.0)
+     * @param[in] ry Y-axis rotation angle (one rotation at 360.0)
+     * @param[in] rz Z-axis rotation angle (one rotation at 360.0)
+     */
     void draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0,
               double zoom = 1, double alpha = 1,
               double rx = 0, double ry = 0, double rz = 0);
+    /**
+     * Call obj.draw
+     * 
+     * @param[in] pos Relative coord
+     * @param[in] zoom Enlargement rate (1.0 = 1x)
+     * @param[in] alpha Opacity (0.0 = transparent / 1.0 = opaque)
+     * @param[in] rot Rotation angle (one rotation at 360.0)
+     */
     void draw(lua_State *L, glm::dvec3 pos = glm::dvec3(0),
               double zoom = 1, double alpha = 1, glm::dvec3 rot = glm::dvec3(0));
+    /**
+     * Call obj.drawpoly
+     * 
+     * @param[in] x0,y0,z0 Coordinates of vertices 0 of the rectangle
+     * @param[in] x1,y1,z1 Coordinates of vertices 1 of the rectangle
+     * @param[in] x2,y2,z2 Coordinates of vertices 2 of the rectangle
+     * @param[in] x3,y3,z3 Coordinates of vertices 3 of the rectangle
+     * @param[in] u0,v0 Image coordinates of the object corresponding to vertex 0
+     * @param[in] u1,v1 Image coordinates of the object corresponding to vertex 1
+     * @param[in] u2,v2 Image coordinates of the object corresponding to vertex 2
+     * @param[in] u3,v3 Image coordinates of the object corresponding to vertex 3
+     * @param[in] alpha Opacity (0.0 = transparent / 1.0 = opaque)
+     */
     void drawpoly(lua_State *L,
                   double x0, double y0, double z0,
                   double x1, double y1, double z1,
@@ -59,6 +107,19 @@ namespace aut {
                   double u2 = USHRT_MAX, double v2 = USHRT_MAX,
                   double u3 = 0, double v3 = USHRT_MAX,
                   double alpha = 1);
+    /**
+     * Call obj.drawpoly
+     * 
+     * @param[in] p0 Coordinates of vertices 0 of the rectangle
+     * @param[in] p1 Coordinates of vertices 1 of the rectangle
+     * @param[in] p2 Coordinates of vertices 2 of the rectangle
+     * @param[in] p3 Coordinates of vertices 3 of the rectangle
+     * @param[in] uv0 Image coordinates of the object corresponding to vertex 0
+     * @param[in] uv1 Image coordinates of the object corresponding to vertex 1
+     * @param[in] uv2 Image coordinates of the object corresponding to vertex 2
+     * @param[in] uv3 Image coordinates of the object corresponding to vertex 3
+     * @param[in] alpha Opacity (0.0 = transparent / 1.0 = opaque)
+     */
     void drawpoly(lua_State *L,
                   glm::dvec3 p0, glm::dvec3 p1, glm::dvec3 p2, glm::dvec3 p3,
                   glm::dvec2 uv0 = glm::dvec2(0, 0),
@@ -66,68 +127,326 @@ namespace aut {
                   glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX),
                   glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX),
                   double alpha = 1);
+    /**
+     * Call obj.load
+     * 
+     * @param params Similar to obj.load
+     */
     template <typename... Params>
     void load(lua_State *L, Params... params);
+    /**
+     * Call obj.setfont
+     * @param[in] name Font name
+     * @param[in] size Font size
+     * @param[in] params Similar to obj.setfont
+     */
     template <typename... Params>
     void setfont(lua_State *L, const std::string &name, double size, Params... params);
+    /**
+     * Call obj.rand
+     * 
+     * @param[in] st_num Minimum random number
+     * @param[in] ed_num Maximum random number
+     * @param[in] params Similar to obj.rand
+     * 
+     * @return lua_Integer Generated random number (integer)
+     */
     template <typename... Params>
     lua_Integer rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Params... params);
+    /**
+     * Call obj.setoption
+     * 
+     * @param[in] name Option name
+     * @param[in] params Similar to obj.setoption
+     */
     template <typename... Params>
     void setoption(lua_State *L, const std::string &name, Params... params);
+    /**
+     * Call obj.getoption("track_mode", ...)
+     * 
+     * @param[in] value Track bar number
+     * 
+     * @return lua_Integer Track bar movement mode
+     */
     lua_Integer getoption_track_mode(lua_State *L, lua_Integer value);
+    /**
+     * Call obj.getoption("section_num")
+     * 
+     * @return lua_Integer Number of object intervals
+     */
     lua_Integer getoption_section_num(lua_State *L);
+    /**
+     * Call obj.getoption("script_name"...)
+     * 
+     * @param[in] value Relative positions above and below the filter effect
+     *                  (0 is self / minus is up / plus is down)
+     * @param[in] skip Skip disabled filter effects (true = do / false <default> = not)
+     * 
+     * @return const char* Script name
+     */
     const char* getoption_script_name(lua_State *L, lua_Integer value = 0, bool skip = false);
+    /**
+     * Call obj.getoption("gui")
+     * 
+     * @return bool GUI display status
+     */
     bool getoption_gui(lua_State *L);
+    /** 
+     * Call obj.getoption("camera_mode")
+     * 
+     * @return lua_Integer Camera control status
+     */
     lua_Integer getoption_camera_mode(lua_State *L);
+    /**
+     * Call obj.getoption("camera_param")
+     * 
+     * @return CameraParam Camera parameters
+     */
     CameraParam getoption_camera_param(lua_State *L);
+    /**
+     * Call obj.getoption("multi_object")
+     * 
+     * @return bool true = valid / false = invalid
+     */
     bool getoption_multi_object(lua_State *L);
+    /**
+     * Call obj.getvalue
+     * 
+     * @param[in] target Setting type
+     * @param[in] params Similar to obj.getvalue
+     * 
+     * @return lua_Number Current object's setting value
+     */
     template<typename T, typename... Params>
     lua_Number getvalue(lua_State *L, T target, Params... params);
+    /**
+     * Call obj.setanchor
+     * 
+     * @param[in] name Specifies the variable name that stores the coordinates
+     *                 specified by --dialog.
+     *                 * Specify the variable name as a character string
+     * @param[in] num Specifies the number of anchor points.
+     *                You can specify up to 16 anchors in total.
+     * @param[in] params Similar to obj.setanchor
+     * 
+     * @return lua_Integer Number of anchor points acquired
+     */
     template<typename... Params>
     lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num,
                           Params... params);
+    /**
+     * Call obj.getaudio
+     * 
+     * @param[in] buf_name Specifies the table that receives the data.
+     *                     If specified "nil", returns the contents of the table of
+     *                     third return values
+     * @param[in] file Audio file name (If you specify "audiobuffer",
+     *                 you can get the audio data being edited)
+     * @param[in] type Type of acquired data
+     * @param[in] size Number of data to be acquired (may be less than the specified value)
+     * @param[out] out_data_num Number of acquired data (null can be specified)
+     * @param[out] out_sampling_rate Sampling rate (null can be specified)
+     * 
+     * @return std::vector<lua_Integer> Recieved data array
+     */
     std::vector<lua_Integer> getaudio(lua_State *L, const std::string &buf_name,
                                       const std::string &file, const std::string &type,
                                       lua_Integer size, lua_Integer *out_data_num = nullptr,
                                       lua_Integer *out_sampling_rate = nullptr);
+    /**
+     * Call obj.filter
+     * 
+     * @param[in] name Filter name
+     * @param[in] params Similar to obj.filter
+     */
     template<typename... Params>
     void filter(lua_State *L, const std::string &name, Params... params);
+    /**
+     * Call obj.copybuffer
+     * 
+     * @param[in] dst Destination buffer
+     * @param[in] src Source buffer
+     * 
+     * @return bool true = success / false = failure
+     */
     bool copybuffer(lua_State *L, const std::string &dst, const std::string &src);
+    /**
+     * Call obj.getpixel(x,y, "col")
+     * 
+     * @param[in] x,y Coords of pixels to get
+     * 
+     * @return PixelCol Acquired pixel data
+     */
     PixelCol getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
+    /**
+     * Call obj.getpixel(x,y, "rgb")
+     * 
+     * @param[in] x,y Coords of pixels to get
+     * 
+     * @return PixelRGBA Acquired pixel data
+     */
     PixelRGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
+    /**
+     * Call obj.getpixel(x,y, "yc")
+     * 
+     * @param[in] x,y Coords of pixels to get
+     * 
+     * @return PixelYC Acquired pixel data
+     */
     PixelYC getpixel_yc(lua_State *L, lua_Integer x, lua_Integer y);
+    /**
+     * Call obj.getpixel()
+     * 
+     * @return Size2D Number of horizontal and vertical pixels
+     */
     Size2D getpixel_size(lua_State *L);
+    /**
+     * Call obj.putpixel
+     * 
+     * @param[in] x,y Coords of pixels to put
+     * @param[in] pix Pixel data to put
+     */
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelCol pix);
+    /**
+     * Call obj.putpixel
+     * 
+     * @param[in] x,y Coords of pixels to put
+     * @param[in] pix Pixel data to put
+     */
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelRGBA pix);
+    /**
+     * Call obj.putpixel
+     * 
+     * @param[in] x,y Coords of pixels to put
+     * @param[in] pix Pixel data to put
+     */
     void putpixel(lua_State *L, lua_Integer x, lua_Integer y, PixelYC pix);
+    /**
+     * obj.copypixel
+     * 
+     * @param[in] dst_x,dst_y Coords of copy destination
+     * @param[in] src_x,src_y Coords of copy source
+     */
     void copypixel(lua_State *L, lua_Integer dst_x, lua_Integer dst_y,
                    lua_Integer src_x, lua_Integer src_y);
+    /**
+     * Call obj.pixeloption
+     * 
+     * @param[in] name Option name
+     * @param[in] value Option value
+     */
     void pixeloption(lua_State *L, const std::string &name, const std::string &value);
+    /**
+     * Call obj.pixeloption
+     * 
+     * @param[in] name Option name
+     * @param[in] value Option value
+     */
     void pixeloption(lua_State *L, const std::string &name, lua_Integer value);
+    /**
+     * Call obj.getpixeldata
+     * 
+     * @param[out] out_data Acquired image data
+     * @param[out] out_size Acquired image size
+     * @param[in] params Similar to obj.getpixeldata
+     */
     template<typename... Params>
     void getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size, Params... params);
+    /**
+     * Call obj.getpixeldata
+     * 
+     * @param[out] out_data Acquired image data
+     * @param[out] out_w Acquired image width
+     * @param[out] out_h Acquired image height
+     * @param[in] params Similar to obj.getpixeldata
+     */
     template<typename... Params>
     void getpixeldata(lua_State *L, PixelRGBA **out_data, uint *out_w, uint *out_h, Params... params);
+    /**
+     * Call obj.putpixeldata
+     * 
+     * @param[in] data Pixel datas to put
+     */
     void putpixeldata(lua_State *L, PixelRGBA *data);
+    /**
+     * Call obj.getinfo("script_path")
+     * 
+     * @return std::string Script path
+     */
     std::string getinfo_script_path(lua_State *L);
+    /**
+     * Callobj.getinfo("saving")
+     * 
+     * @return bool Is saving
+     */
     bool getinfo_saving(lua_State *L);
+    /**
+     * Call obj.getinfo("image_max")
+     * 
+     * @return Size2D Max image size
+     */
     Size2D getinfo_image_max(lua_State *L);
+    /**
+     * Call obj.interpolation
+     * 
+     * @param[in] time Time within 0 ~ 1
+     * @param[in] x0 X coord of point 0
+     * @param[in] x1 X coord of point 1
+     * @param[in] x2 X coord of point 2
+     * @param[in] x3 X coord of point 3
+     */
     lua_Number interpolation(lua_State *L, lua_Number time,
                              lua_Number x0, lua_Number x1,
                              lua_Number x2, lua_Number x3);
+    /**
+     * Call obj.interpolation
+     * 
+     * @param[in] time Time within 0 ~ 1
+     * @param[in] x0,y0 X, Y coord of point 0
+     * @param[in] x1,y1 X, Y coord of point 1
+     * @param[in] x2,y2 X, Y coord of point 2
+     * @param[in] x3,y3 X, Y coord of point 3
+     */
     glm::dvec2 interpolation(lua_State *L, lua_Number time,
                              lua_Number x0, lua_Number y0,
                              lua_Number x1, lua_Number y1,
                              lua_Number x2, lua_Number y2,
                              lua_Number x3, lua_Number y3);
+    /**
+     * Call obj.interpolation
+     * 
+     * @param[in] time Time within 0 ~ 1
+     * @param[in] x0,y0,z0 X, Y, Z coord of point 0
+     * @param[in] x1,y1,z1 X, Y, Z coord of point 1
+     * @param[in] x2,y2,z2 X, Y, Z coord of point 2
+     * @param[in] x3,y3,z3 X, Y, Z coord of point 3
+     */
     glm::dvec3 interpolation(lua_State *L, lua_Number time,
                              lua_Number x0, lua_Number y0, lua_Number z0,
                              lua_Number x1, lua_Number y1, lua_Number z1,
                              lua_Number x2, lua_Number y2, lua_Number z2,
                              lua_Number x3, lua_Number y3, lua_Number z3);
+    /**
+     * Call obj.interpolation
+     * 
+     * @param[in] time Time within 0 ~ 1
+     * @param[in] p0 Coord of point 0
+     * @param[in] p1 Coord of point 1
+     * @param[in] p2 Coord of point 2
+     * @param[in] p3 Coord of point 3
+     */
     glm::dvec2 interpolation(lua_State *L, lua_Number time,
                              const glm::dvec2 &p0, const glm::dvec2 &p1,
                              const glm::dvec2 &p2, const glm::dvec2 &p3);
+    /**
+     * Call obj.interpolation
+     * 
+     * @param[in] time Time within 0 ~ 1
+     * @param[in] p0 Coord of point 0
+     * @param[in] p1 Coord of point 1
+     * @param[in] p2 Coord of point 2
+     * @param[in] p3 Coord of point 3
+     */
     glm::dvec3 interpolation(lua_State *L, lua_Number time,
                              const glm::dvec3 &p0, const glm::dvec3 &p1,
                              const glm::dvec3 &p2, const glm::dvec3 &p3);
