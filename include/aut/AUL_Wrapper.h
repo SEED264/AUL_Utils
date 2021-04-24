@@ -42,8 +42,8 @@ namespace aut {
     // obj空間の関数をスタックトップに積む関数
     void GetAULFunc(lua_State *L, const std::string &func_name);
 
-    template <typename... Parms>
-    void effect(lua_State *L, Parms... parms);
+    template <typename... Params>
+    void effect(lua_State *L, Params... params);
     void draw(lua_State *L, double ox = 0, double oy = 0, double oz = 0,
               double zoom = 1, double alpha = 1,
               double rx = 0, double ry = 0, double rz = 0);
@@ -66,14 +66,14 @@ namespace aut {
                   glm::dvec2 uv2 = glm::dvec2(USHRT_MAX, USHRT_MAX),
                   glm::dvec2 uv3 = glm::dvec2(0, USHRT_MAX),
                   double alpha = 1);
-    template <typename... Parms>
-    void load(lua_State *L, Parms... parms);
-    template <typename... Parms>
-    void setfont(lua_State *L, const std::string &name, double size, Parms... parms);
-    template <typename... Parms>
-    lua_Integer rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Parms... parms);
-    template <typename... Parms>
-    void setoption(lua_State *L, const std::string &name, Parms... parms);
+    template <typename... Params>
+    void load(lua_State *L, Params... params);
+    template <typename... Params>
+    void setfont(lua_State *L, const std::string &name, double size, Params... params);
+    template <typename... Params>
+    lua_Integer rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num, Params... params);
+    template <typename... Params>
+    void setoption(lua_State *L, const std::string &name, Params... params);
     lua_Integer getoption_track_mode(lua_State *L, lua_Integer value);
     lua_Integer getoption_section_num(lua_State *L);
     const char* getoption_script_name(lua_State *L, lua_Integer value = 0, bool skip = false);
@@ -81,16 +81,17 @@ namespace aut {
     lua_Integer getoption_camera_mode(lua_State *L);
     CameraParam getoption_camera_param(lua_State *L);
     bool getoption_multi_object(lua_State *L);
-    template<typename T, typename... Parms>
-    lua_Number getvalue(lua_State *L, T target, Parms... parms);
-    template<typename... Parms>
-    lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num, Parms... parms);
-    std::vector<lua_Integer> getaudio(lua_State *L, const std::string &bufName,
+    template<typename T, typename... Params>
+    lua_Number getvalue(lua_State *L, T target, Params... params);
+    template<typename... Params>
+    lua_Integer setanchor(lua_State *L, const std::string &name, lua_Integer num,
+                          Params... params);
+    std::vector<lua_Integer> getaudio(lua_State *L, const std::string &buf_name,
                                       const std::string &file, const std::string &type,
-                                      lua_Integer size, lua_Integer *out_dataNum = nullptr,
-                                      lua_Integer *out_samplingRate = nullptr);
-    template<typename... Parms>
-    void filter(lua_State *L, const std::string &name, Parms... parms);
+                                      lua_Integer size, lua_Integer *out_data_num = nullptr,
+                                      lua_Integer *out_sampling_rate = nullptr);
+    template<typename... Params>
+    void filter(lua_State *L, const std::string &name, Params... params);
     bool copybuffer(lua_State *L, const std::string &dst, const std::string &src);
     PixelCol getpixel_col(lua_State *L, lua_Integer x, lua_Integer y);
     PixelRGBA getpixel_rgb(lua_State *L, lua_Integer x, lua_Integer y);
@@ -103,10 +104,10 @@ namespace aut {
                    lua_Integer src_x, lua_Integer src_y);
     void pixeloption(lua_State *L, const std::string &name, const std::string &value);
     void pixeloption(lua_State *L, const std::string &name, lua_Integer value);
-    template<typename... Parms>
-    void getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size, Parms... parms);
-    template<typename... Parms>
-    void getpixeldata(lua_State *L, PixelRGBA **out_data, uint *out_w, uint *out_h, Parms... parms);
+    template<typename... Params>
+    void getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size, Params... params);
+    template<typename... Params>
+    void getpixeldata(lua_State *L, PixelRGBA **out_data, uint *out_w, uint *out_h, Params... params);
     void putpixeldata(lua_State *L, PixelRGBA *data);
     std::string getinfo_script_path(lua_State *L);
     bool getinfo_saving(lua_State *L);
@@ -137,10 +138,10 @@ inline void aut::GetAULFunc(lua_State *L, const std::string &func_name) {
     lua_getfield(L, -1, func_name.c_str());
 }
 
-template <typename... Parms>
-inline void aut::effect(lua_State *L, Parms... parms) {
+template <typename... Params>
+inline void aut::effect(lua_State *L, Params... params) {
     aut::GetAULFunc(L, "effect");
-    size_t pushed_num = SetArgs(L, parms...);
+    size_t pushed_num = SetArgs(L, params...);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
@@ -186,38 +187,38 @@ inline void aut::drawpoly(lua_State *L,
              uv0.x, uv0.y, uv1.x, uv1.y, uv2.x, uv2.y, uv3.x, uv3.y, alpha);
 }
 
-template <typename... Parms>
-inline void aut::load(lua_State *L, Parms... parms) {
+template <typename... Params>
+inline void aut::load(lua_State *L, Params... params) {
     aut::GetAULFunc(L, "load");
-    size_t pushed_num = SetArgs(L, parms...);
+    size_t pushed_num = SetArgs(L, params...);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
 
-template <typename... Parms>
+template <typename... Params>
 inline void aut::setfont(lua_State *L, const std::string &name, double size,
-                         Parms... parms) {
+                         Params... params) {
     aut::GetAULFunc(L, "setfont");
-    size_t pushed_num = SetArgs(L, name, size, parms...);
+    size_t pushed_num = SetArgs(L, name, size, params...);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
 
-template <typename... Parms>
+template <typename... Params>
 inline lua_Integer aut::rand(lua_State *L, lua_Integer st_num, lua_Integer ed_num,
-                             Parms... parms) {
+                             Params... params) {
     GetAULFunc(L, "rand");
-    size_t pushed_num = SetArgs(L, st_num, ed_num, parms...);
+    size_t pushed_num = SetArgs(L, st_num, ed_num, params...);
     lua_call(L, pushed_num, 1);
     lua_Integer ret = lua_tointeger(L, -1);
     lua_pop(L, 2);
     return ret;
 }
 
-template <typename... Parms>
-inline void aut::setoption(lua_State *L, const std::string &name, Parms... parms) {
+template <typename... Params>
+inline void aut::setoption(lua_State *L, const std::string &name, Params... params) {
     GetAULFunc(L, "setoption");
-    size_t pushed_num = SetArgs(L, name, parms...);
+    size_t pushed_num = SetArgs(L, name, params...);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
@@ -298,36 +299,36 @@ inline bool aut::getoption_multi_object(lua_State *L) {
     return static_cast<bool>(ret);
 }
 
-template<typename T, typename... Parms>
-inline lua_Number aut::getvalue(lua_State *L, T target, Parms... parms) {
+template<typename T, typename... Params>
+inline lua_Number aut::getvalue(lua_State *L, T target, Params... params) {
     GetAULFunc(L, "getvalue");
-    size_t pushed_num = SetArgs(L, target, parms...);
+    size_t pushed_num = SetArgs(L, target, params...);
     lua_call(L, pushed_num, 1);
     lua_Number ret = lua_tonumber(L, -1);
     lua_pop(L, 2);
     return ret;
 }
 
-template<typename... Parms>
+template<typename... Params>
 inline lua_Integer aut::setanchor(lua_State *L, const std::string &name,
-                                  lua_Integer num, Parms... parms) {
+                                  lua_Integer num, Params... params) {
     GetAULFunc(L, "setanchor");
-    size_t pushed_num = SetArgs(L, name, num, parms...);
+    size_t pushed_num = SetArgs(L, name, num, params...);
     lua_call(L, pushed_num, 1);
     lua_Integer ret = lua_tointeger(L, -1);
     lua_pop(L, 2);
     return ret;
 }
 
-inline std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &bufName,
+inline std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &buf_name,
                                               const std::string &file, const std::string &type,
-                                              lua_Integer size, lua_Integer *out_dataNum,
-                                              lua_Integer *out_samplingRate) {
+                                              lua_Integer size, lua_Integer *out_data_num,
+                                              lua_Integer *out_sampling_rate) {
     GetAULFunc(L, "getaudio");
 
     bool return_buffer = false;
     int returnNum = 2;
-    if (bufName == "nil" || !GetVariable(L, bufName)) {
+    if (buf_name == "nil" || !GetVariable(L, buf_name)) {
         return_buffer = true;
     } else if (!lua_istable(L, -1)) {
         lua_pop(L, 1);
@@ -341,13 +342,13 @@ inline std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &b
     lua_call(L, pushed_num, returnNum);
 
     size_t bufSize = lua_tointeger(L, -returnNum);
-    if (out_dataNum != nullptr)
-        *out_dataNum = bufSize;
-    if (out_samplingRate != nullptr)
-        *out_samplingRate = lua_tointeger(L, -returnNum + 1);
+    if (out_data_num != nullptr)
+        *out_data_num = bufSize;
+    if (out_sampling_rate != nullptr)
+        *out_sampling_rate = lua_tointeger(L, -returnNum + 1);
 
     if (!return_buffer)
-        GetVariable(L, bufName);
+        GetVariable(L, buf_name);
     std::vector<lua_Integer> buf(bufSize);
     for (size_t i = 0; i < bufSize; i++) {
         buf[i] = GetTableInteger(L, i + 1);
@@ -357,10 +358,10 @@ inline std::vector<lua_Integer> aut::getaudio(lua_State *L, const std::string &b
     return buf;
 }
 
-template<typename... Parms>
-inline void aut::filter(lua_State *L, const std::string &name, Parms... parms) {
+template<typename... Params>
+inline void aut::filter(lua_State *L, const std::string &name, Params... params) {
     GetAULFunc(L, "filter");
-    size_t pushed_num = SetArgs(L, name, parms...);
+    size_t pushed_num = SetArgs(L, name, params...);
     lua_call(L, pushed_num, 0);
     lua_pop(L, 1);
 }
@@ -464,17 +465,17 @@ inline void aut::pixeloption(lua_State *L, const std::string &name, lua_Integer 
     lua_pop(L, 1);
 }
 
-template<typename... Parms>
+template<typename... Params>
 inline void aut::getpixeldata(lua_State *L, PixelRGBA **out_data, Size2D *out_size,
-                              Parms... parms) {
-    getpixeldata(L, out_data, &out_size->w, &out_size->h, parms...);
+                              Params... params) {
+    getpixeldata(L, out_data, &out_size->w, &out_size->h, params...);
 }
 
-template<typename... Parms>
+template<typename... Params>
 inline void aut::getpixeldata(lua_State *L, PixelRGBA **out_data,
-                              uint *out_w, uint *out_h, Parms... parms) {
+                              uint *out_w, uint *out_h, Params... params) {
     GetAULFunc(L, "getpixeldata");
-    int pushed_num = SetArgs(L, parms...);
+    int pushed_num = SetArgs(L, params...);
     lua_call(L, pushed_num, 3);
     *out_h = lua_tointeger(L, -1);
     *out_w = lua_tointeger(L, -2);
